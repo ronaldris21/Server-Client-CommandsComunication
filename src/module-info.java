@@ -7,5 +7,4 @@
  */
 module PracticaDAD1 {
 	
-	//borrar
 }
