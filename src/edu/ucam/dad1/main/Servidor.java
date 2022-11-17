@@ -32,7 +32,13 @@ public class Servidor {
 			
 			String lineaLeida = "";
 			
+			lineaLeida=br.readLine();
 			
+			String[] palabras = lineaLeida.split("");
+			if(palabras[2]=="admin") {
+				pw.println("OK " + palabras[0] + CodigosRespuesta.Ok + "Envie contrasena");
+				pw.flush();
+			}
 			while(!(lineaLeida=br.readLine()).equalsIgnoreCase("QUIT")) {
 				System.out.println("Line received in server... " + lineaLeida);
 				pw.println(lineaLeida);
