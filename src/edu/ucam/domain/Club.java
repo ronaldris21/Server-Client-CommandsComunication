@@ -4,7 +4,6 @@
 
 package edu.ucam.domain;
 
-import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.io.Serializable;

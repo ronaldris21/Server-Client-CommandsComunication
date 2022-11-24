@@ -1,4 +1,4 @@
-package edu.ucam.dad1.hilos;
+package edu.ucam.server;
 
 public class HiloServidorEscucharPeticiones {
 

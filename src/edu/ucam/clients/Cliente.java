@@ -1,4 +1,4 @@
-package edu.ucam.dad1.main;
+package edu.ucam.clients;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,10 +14,11 @@ public class Cliente {
 		// TODO Auto-generated constructor stub
 	}
 	
+	
 	public void ejecutar()
 	{
 		try {		
-					
+			
 			System.out.println("Lanzando conexi�n...");
 			Socket socket = new Socket("127.0.0.1", 5000);
 			System.out.println("Conexi�n establecida... " + socket.getRemoteSocketAddress());
@@ -29,6 +30,8 @@ public class Cliente {
 			Scanner keyboard = new Scanner(System.in);
 			
 			String line = "";
+			
+		
 			
 			while(!(line=keyboard.nextLine()).equalsIgnoreCase("QUIT")) {
 				pw.println(line);
