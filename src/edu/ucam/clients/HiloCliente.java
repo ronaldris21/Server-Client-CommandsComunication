@@ -16,20 +16,30 @@ public class HiloCliente extends Thread {
 
 	public void run()
 	{
-		while(cliente.isActive())
+		while(true)
 		{
 			try {
+				if (!cliente.isActive())
+				{
+					this.cliente.getSocket().close();
+					return;
+				}
+				
+				
 				String lineaRespuesta = br.readLine();
-				System.out.println(lineaRespuesta);
+				if(lineaRespuesta!=null)
+					System.out.println(lineaRespuesta);
 				
 				String[] palabras = lineaRespuesta.split(" ");	
 				if(palabras.length >= 5 && palabras[0] == "PREOK" ) 
 				{
 					///LANZO nuevo HILO COMANDOS!
+					//Se conecta el socket
 				}
 			} catch (Exception e) {
 			}
 		}
+		
 	}
 
 }

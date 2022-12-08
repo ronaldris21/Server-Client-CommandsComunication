@@ -31,7 +31,7 @@ public class HiloServidorComandos extends Thread{
 		if(login())
 		{
 			////Aqui vamos a gestionar los comandos cuando ya inicio sesion
-			while(socket!= null && !socket.isClosed())
+			while(true)
 			{
 				try {
 					String comando = br.readLine();
@@ -79,7 +79,7 @@ public class HiloServidorComandos extends Thread{
 	
 
 	private boolean login() {
-		while(revisarConexion())
+		while(true)
 		{
 			try {
 				String comando = br.readLine();  //<number> USER <name>
@@ -94,7 +94,7 @@ public class HiloServidorComandos extends Thread{
 					{
 						pw.println("OK "+ palabras[0] + " "+ CodigosRespuesta.Ok + " Envie contraseña");
 						pw.flush();
-						while(socket!= null && !socket.isClosed())
+						while(true)
 						{
 							
 							////Ahora valido contraseña
@@ -140,22 +140,10 @@ public class HiloServidorComandos extends Thread{
 					pw.flush();
 				}
 			} catch (Exception e) {
-				System.out.println("EX			-------EX1 ENTRO AL TRYCATCH");
-				System.out.println("HiloServidorComandos.login(): -----  ");
 				System.out.println(e.getMessage());
 			}
 		}
-		return false;
 	}
-	
-	private boolean revisarConexion() {
-		if(socket== null)
-			return false;
-		if(socket.isClosed())
-			return false;
-		return true;
-	}
-
 
 	///TODO: Decidir forma de hacer exit!
 	public boolean esExit(String[] palabras)
@@ -165,15 +153,9 @@ public class HiloServidorComandos extends Thread{
 			pw.println("OK "+ palabras[0] + " "+ CodigosRespuesta.Ok + " Bye");
 			pw.flush();
 			
-
-			this.servidor.eliminarCliente(this);
-
-			System.out.println("--------------------------------------");
-			System.out.println(socket);
-			System.out.println("closed: "+socket.isClosed());
-			System.out.println("bound: "+socket.isBound());
-			System.out.println("conectet: "+socket.isConnected());
-			System.out.println("--------------------------------------");
+			this.servidor.eliminarCliente(this);  ///Elimino de la lista de clientes del servidor
+			
+			
 			try {
 				socket.shutdownOutput();
 				this.socket.close();
@@ -181,10 +163,6 @@ public class HiloServidorComandos extends Thread{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println(socket);
-			System.out.println("closed: "+socket.isClosed());
-			System.out.println("bound: "+socket.isBound());
-			System.out.println("conectet: "+socket.isConnected());
 			return true;
 		}
 		return false;

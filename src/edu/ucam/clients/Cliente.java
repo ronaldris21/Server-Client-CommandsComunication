@@ -43,8 +43,6 @@ public class Cliente {
 	
 	public void ejecutar()
 	{
-		
-		
 		try {
 			this.socket =  new Socket("localhost",5000);
 			
@@ -59,19 +57,25 @@ public class Cliente {
 			///Cliente se queda escribiendo
 			Scanner teclado =  new Scanner(System.in);
 			
-			while(isActive())
+			while(true)
 			{
+				if(!isActive())
+					return;
 				try {
 					String comando =  teclado.nextLine();
 					pw.println(comando);
-					pw.flush();					
+					pw.flush();	
+					
+					String[] palabras = comando.split(" ");
+					
+					if(palabras.length>2 && palabras[1].equals("EXIT"))
+						this.SetisActive(false);
 				} catch (Exception e) {} //En caso que el servidor cierre el socket!
 			}
+			
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -79,7 +83,6 @@ public class Cliente {
 	
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		(new Cliente()).ejecutar();
 		
 
