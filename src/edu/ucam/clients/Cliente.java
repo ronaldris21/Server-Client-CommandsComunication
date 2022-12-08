@@ -6,50 +6,77 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Scanner;
+
+import edu.ucam.domain.CodigosRespuesta;
 
 public class Cliente {
 
-	public Cliente() {
-		// TODO Auto-generated constructor stub
+	
+	private Boolean isActive = true;
+	private Socket socket;
+	
+	
+	public Socket getSocket() {
+		return socket;
 	}
+
+	public void setSocket(Socket socket) {
+		this.socket = socket;
+	}
+
+	public synchronized Boolean isActive()
+	{
+		return isActive;
+	}
+	
+	public synchronized void SetisActive(Boolean status)
+	{
+		isActive = status;
+	}
+	
+	
+	
+	
 	
 	
 	public void ejecutar()
 	{
-		try {		
+		
+		
+		try {
+			this.socket =  new Socket("localhost",5000);
 			
-			System.out.println("Lanzando conexi�n...");
-			Socket socket = new Socket("127.0.0.1", 5000);
-			System.out.println("Conexi�n establecida... " + socket.getRemoteSocketAddress());
-									
+			PrintWriter pw =  new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+			
+			///Pongo un hilo a escuchar!
+			HiloCliente hiloEscuchar =  new HiloCliente(this, br);
+			hiloEscuchar.start();
 			
 			
-			Scanner keyboard = new Scanner(System.in);
+			///Cliente se queda escribiendo
+			Scanner teclado =  new Scanner(System.in);
 			
-			String line = "";
-			
-		
-			
-			while(!(line=keyboard.nextLine()).equalsIgnoreCase("QUIT")) {
-				pw.println(line);
-				pw.flush();
-				
-				System.out.println("\t" + br.readLine());
-			}	
-			
-			pw.println(line);
-			pw.flush();
-			
-			System.out.println("Finalizado");
-			
-		} catch (IOException e) {
+			while(isActive())
+			{
+				try {
+					String comando =  teclado.nextLine();
+					pw.println(comando);
+					pw.flush();					
+				} catch (Exception e) {} //En caso que el servidor cierre el socket!
+			}
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 	
-		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+	
+	
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
