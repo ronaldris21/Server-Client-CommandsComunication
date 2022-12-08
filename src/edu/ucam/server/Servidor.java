@@ -29,11 +29,11 @@ public class Servidor {
 		
 		Club c1= new Club();
 		c1.setId("0");
-		c1.setId("Real Murcia");
+		c1.setNombre("Real Murcia");
 		club.add(c1);
 		Club c2= new Club();
 		c1.setId("1");
-		c1.setId("Real Madrid");
+		c1.setNombre("Real Madrid");
 		club.add(c2);
 		Jugador j1 = new Jugador();
 		j1.setId("1");
@@ -42,22 +42,22 @@ public class Servidor {
 		j1.setGoles(10);
 		jugador.add(j1);
 		Jugador j2 = new Jugador();
-		j1.setId("1");
-		j1.setApellidos("Tejada");
-		j1.setNombre("Ronald");
-		j1.setGoles(7);
+		j2.setId("2");
+		j2.setApellidos("Tejada");
+		j2.setNombre("Ronald");
+		j2.setGoles(7);
 		jugador.add(j2);
 		Jugador j3 = new Jugador();
-		j1.setId("0");
-		j1.setApellidos("Cano");
-		j1.setNombre("Pablo");
-		j1.setGoles(6);
+		j3.setId("0");
+		j3.setApellidos("Cano");
+		j3.setNombre("Pablo");
+		j3.setGoles(6);
 		jugador.add(j3);
 		Jugador j4 = new Jugador();
-		j1.setId("0");
-		j1.setApellidos("Atreides");
-		j1.setNombre("Paul");
-		j1.setGoles(4);
+		j4.setId("3");
+		j4.setApellidos("Atreides");
+		j4.setNombre("Paul");
+		j4.setGoles(4);
 		jugador.add(j4);
 		
 		///TODO CREATE INIT DATA 
