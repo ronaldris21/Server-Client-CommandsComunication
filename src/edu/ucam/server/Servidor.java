@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import edu.ucam.clients.*;
 import edu.ucam.domain.Club;
 import edu.ucam.domain.CodigosRespuesta;
+import edu.ucam.domain.Jugador;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -16,18 +17,48 @@ import java.net.Socket;
 public class Servidor {
 	
 	private ArrayList<HiloServidorComandos> hilosClientes;
+	private ArrayList<Club> club;
+	private ArrayList <Jugador> jugador;
 	
 	
 	
-	
-	
-
-
 	public Servidor() {
 		this.hilosClientes =  new ArrayList<HiloServidorComandos>();
+		setClub(new ArrayList<Club>());
+		setJugador(new ArrayList<Jugador>());
 		
-		
-		
+		Club c1= new Club();
+		c1.setId("0");
+		c1.setId("Real Murcia");
+		club.add(c1);
+		Club c2= new Club();
+		c1.setId("1");
+		c1.setId("Real Madrid");
+		club.add(c2);
+		Jugador j1 = new Jugador();
+		j1.setId("1");
+		j1.setApellidos("Quintana");
+		j1.setNombre("Dante");
+		j1.setGoles(10);
+		jugador.add(j1);
+		Jugador j2 = new Jugador();
+		j1.setId("1");
+		j1.setApellidos("Tejada");
+		j1.setNombre("Ronald");
+		j1.setGoles(7);
+		jugador.add(j2);
+		Jugador j3 = new Jugador();
+		j1.setId("0");
+		j1.setApellidos("Cano");
+		j1.setNombre("Pablo");
+		j1.setGoles(6);
+		jugador.add(j3);
+		Jugador j4 = new Jugador();
+		j1.setId("0");
+		j1.setApellidos("Atreides");
+		j1.setNombre("Paul");
+		j1.setGoles(4);
+		jugador.add(j4);
 		
 		///TODO CREATE INIT DATA 
 	}
@@ -94,6 +125,26 @@ public class Servidor {
 		//Inicio el serverSocket de commandos
 		(new Servidor()).ejecutar();
 		
+	}
+
+
+	public ArrayList<Club> getClub() {
+		return club;
+	}
+
+
+	public void setClub(ArrayList<Club> club) {
+		this.club = club;
+	}
+
+
+	public ArrayList <Jugador> getJugador() {
+		return jugador;
+	}
+
+
+	public void setJugador(ArrayList <Jugador> jugador) {
+		this.jugador = jugador;
 	}
 
 }
