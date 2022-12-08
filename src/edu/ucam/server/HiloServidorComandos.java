@@ -60,6 +60,107 @@ public class HiloServidorComandos extends Thread{
 								
 							
 							break;
+							case "ADDCLUB":
+								pw.println("comando no hecho todavia");
+								pw.flush();
+								
+								
+								
+							break;
+							case "UPDATECLUB":
+								pw.println("comando no hecho todavia");
+								pw.flush();
+								
+								
+								
+								break;
+								
+							case "GETCLUB":
+								pw.println("comando no hecho todavia");
+								pw.flush();
+								
+								
+								
+								break;
+								
+							case "REMOVECLUB":
+								pw.println("comando no hecho todavia");
+								pw.flush();
+								
+								
+								
+								break;
+							case "LISTCLUBES":
+								pw.println("comando no hecho todavia");
+								pw.flush();
+								
+								
+								
+								break;
+							case "COUNTCLUBES":
+								pw.println("comando no hecho todavia");
+								pw.flush();
+								
+								
+								
+								break;
+							case "ADDJUGADOR":
+								pw.println("comando no hecho todavia");
+								pw.flush();
+								
+								
+								
+								break;
+							case "GETJUGADOR":
+								pw.println("comando no hecho todavia");
+								pw.flush();
+								
+								
+								
+								break;
+								
+							case "REMOVEJUGADOR":
+								
+								pw.println("comando no hecho todavia");
+								pw.flush();
+								
+								
+								break;
+								
+							case "LISTJUGADORES":
+								
+								pw.println("comando no hecho todavia");
+								pw.flush();
+								
+								
+								break;
+								
+							case "ADDJUGADOR2CLUB":
+								pw.println("comando no hecho todavia");
+								pw.flush();
+								
+								
+								
+								break;
+								
+							case "REMOVEJUGFROMCLUB":
+								
+								pw.println("comando no hecho todavia");
+								pw.flush();
+								
+								
+								break;
+
+							case "LISTJUGFROMCLUB":
+								
+								pw.println("comando no hecho todavia");
+								pw.flush();
+								
+								
+								break;
+								
+								 
+								
 							default:
 								
 								pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.FAILED + "Comando Invalido. Usa un comando valido (SESIONES)");
@@ -122,7 +223,7 @@ public class HiloServidorComandos extends Thread{
 							else
 							{
 								////TODO comando invalido
-								pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.FAILED + "Comando Invalido. Usa el comando PASS");
+								pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.FAILED + " Comando Invalido. Usa el comando PASS");
 								pw.flush();
 							}
 						}
