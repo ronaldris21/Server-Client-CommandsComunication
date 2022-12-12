@@ -32,8 +32,8 @@ public class Servidor {
 		c1.setNombre("Real Murcia");
 		club.add(c1);
 		Club c2= new Club();
-		c1.setId("1");
-		c1.setNombre("Real Madrid");
+		c2.setId("1");
+		c2.setNombre("Real Madrid");
 		club.add(c2);
 		Jugador j1 = new Jugador();
 		j1.setId("1");
