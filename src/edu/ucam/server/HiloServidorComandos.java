@@ -195,7 +195,7 @@ public class HiloServidorComandos extends Thread{
 								break;
 								
 							case "ADDJUGADOR2CLUB":
-								if(palabras.length<3)///COMANDO INVALIDO
+								if(palabras.length<4)///COMANDO INVALIDO
 								{
 									pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.FAILED + "Comando Invalido. Usa el comando PASS");
 									pw.flush();
@@ -242,11 +242,46 @@ public class HiloServidorComandos extends Thread{
 								break;
 								
 							case "REMOVEJUGFROMCLUB":
+								Boolean Bandera= false;
+								if(palabras.length<4)///COMANDO INVALIDO
+								{
+									pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.FAILED + "Comando Invalido. Usa el comando PASS");
+									pw.flush();
+								} 
+								else {
+									
+									
+									Club c= null;
+									
+									for (int i=0; i<this.servidor.getClub().size();i++) {
 								
-								pw.println("comando no hecho todavia");
-								pw.flush();
-								
-								
+										if(palabras[2].equals(this.servidor.getClub().get(i).getId())){
+											
+											c= this.servidor.getClub().get(i);
+											for (int ii=0; ii<c.getJugadores().size();ii++) {
+												
+												if(palabras[3].equals( c.getJugadores().get(ii).getId())){
+													
+													c.getJugadores().remove(ii);
+													pw.println("Borrado");
+													pw.flush();
+													Bandera= true;
+													break;
+												}
+												
+											
+										}
+										
+											
+										}
+										
+									}
+									
+								}
+								if(Bandera==false) {
+									pw.println("No se ha podido borrar");
+									pw.flush();
+								}
 								break;
 
 							case "LISTJUGFROMCLUB":
