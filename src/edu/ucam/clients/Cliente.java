@@ -67,9 +67,10 @@ public class Cliente {
 					pw.flush();	
 					
 					String[] palabras = comando.split(" ");
-					
 					if(palabras.length>2 && palabras[1].equals("EXIT"))
 						this.SetisActive(false);
+					
+					
 				} catch (Exception e) {} //En caso que el servidor cierre el socket!
 			}
 			

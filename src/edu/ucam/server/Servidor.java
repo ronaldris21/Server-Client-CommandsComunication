@@ -1,6 +1,7 @@
 package edu.ucam.server;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import edu.ucam.clients.*;
 import edu.ucam.domain.Club;
@@ -19,10 +20,36 @@ public class Servidor {
 	private ArrayList<HiloServidorComandos> hilosClientes;
 	private ArrayList<Club> club;
 	private ArrayList <Jugador> jugador;
+	private Boolean[] lpuertosDisponibles;
 	
 	
 	
 	public Servidor() {
+		
+		///PUERTOS DISPONIBLES para canal de datos
+		this.lpuertosDisponibles =  new Boolean[3000]; //5100+3000= 
+		for (int i = 0; i < 3000; i++) {
+			this.lpuertosDisponibles[i] = true;
+		}
+		//Puertos 5400, 5500, 5600, 5700, 5800 y 5900 Son usados por el programa VNC, que también sirve para controlar equipos remotamente.
+		//Puertos 6881 y 6969: Son usados por el programa BitTorrent, que sirve para e intercambio de ficheros.
+		//Puerto 8080 y 8000: es el puerto alternativo al puerto 80 TCP para servidores web, normalmente se utiliza este puerto en pruebas.
+		this.lpuertosDisponibles[300] = false; //5400
+		this.lpuertosDisponibles[400] = false; //5500
+		this.lpuertosDisponibles[500] = false; //5600
+		this.lpuertosDisponibles[600] = false; //5700
+		this.lpuertosDisponibles[700] = false; //5800
+		this.lpuertosDisponibles[800] = false; //5900
+		this.lpuertosDisponibles[1781] = false; //6881
+		this.lpuertosDisponibles[1869] = false; //6969
+		this.lpuertosDisponibles[2900] = false; //8000
+		this.lpuertosDisponibles[2980] = false; //8080
+		
+		
+		
+		
+		
+		
 		this.hilosClientes =  new ArrayList<HiloServidorComandos>();
 		setClub(new ArrayList<Club>());
 		setJugador(new ArrayList<Jugador>());
@@ -59,8 +86,9 @@ public class Servidor {
 		j4.setNombre("Paul");
 		j4.setGoles(4);
 		jugador.add(j4);
+
 		
-		///TODO CREATE INIT DATA 
+		
 	}
 	
 	
@@ -76,7 +104,6 @@ public class Servidor {
 	{
 		while(true)
 		{
-				
 			try {
 				///Recibiendo clientes
 				ServerSocket serverSocket =  new ServerSocket(5000);
@@ -92,7 +119,6 @@ public class Servidor {
 				HiloServidorComandos 	hilo = new HiloServidorComandos(this,socket,br,pw);
 				hilo.start();
 				hilosClientes.add(hilo);
-				
 			}catch(Exception e)
 			{
 				
@@ -103,6 +129,26 @@ public class Servidor {
 		
 	}
 	
+	public int getPuertoCanalDatos()
+	{
+		int puerto = 0;
+		
+		for (int i = 0; i < lpuertosDisponibles.length; i++) {
+			if(this.lpuertosDisponibles[i])
+			{
+				this.lpuertosDisponibles[i] = false;
+				return i+5100; 
+			}
+		}
+		return -1; ///no encontrado
+	}
+	
+	public void SetPuertoDisponible(int puerto, boolean status)
+	{
+		puerto = puerto - 5100;
+		if(puerto>=0 && puerto<3000)
+			this.lpuertosDisponibles[puerto] = status;
+	}
 	
 	////GETTERS AND SETTERS
 	public ArrayList<HiloServidorComandos> getHilosClientes() {
@@ -119,9 +165,6 @@ public class Servidor {
 
 
 	public static void main(String[] args) {
-		///Inicio el ServerSocket de datos
-		(new servidorDatos()).start();
-		
 		//Inicio el serverSocket de commandos
 		(new Servidor()).ejecutar();
 		
@@ -146,5 +189,18 @@ public class Servidor {
 	public void setJugador(ArrayList <Jugador> jugador) {
 		this.jugador = jugador;
 	}
+
+
+	public Club getClubbyId(String idClub) {
+		for(Club c : this.club)
+		{
+			if(c.getId().equals(idClub))
+				return c;
+		}
+		return null;
+	}
+	
+	
+	
 
 }

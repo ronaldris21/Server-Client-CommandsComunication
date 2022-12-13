@@ -2,10 +2,13 @@ package edu.ucam.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import edu.ucam.domain.Club;
 import edu.ucam.domain.CodigosRespuesta;
+import edu.ucam.domain.TipoRespuesta;
 
 public class HiloServidorComandos extends Thread{
 
@@ -15,7 +18,6 @@ public class HiloServidorComandos extends Thread{
 	private PrintWriter pw;
 
 	public HiloServidorComandos(Servidor servidor, Socket socket, BufferedReader br, PrintWriter pw) {
-		// TODO Auto-generated constructor stub
 		this.servidor = servidor;
 		this.socket =  socket;
 		this.br = br;
@@ -45,8 +47,7 @@ public class HiloServidorComandos extends Thread{
 					
 					if(palabras.length<2)///COMANDO INVALIDO
 					{
-						pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.FAILED + "Comando Invalido. Usa el comando PASS");
-						pw.flush();
+						EnviarMensaje(TipoRespuesta.FAILED, palabras[0], CodigosRespuesta.BADREQUEST, "Faltan parametros");
 					}
 					else
 					{
@@ -55,9 +56,7 @@ public class HiloServidorComandos extends Thread{
 							case "SESIONES":
 								
 								int cantidadSesiones = this.servidor.getHilosClientes().size();
-								pw.println("OK "+ palabras[0] + " "+ CodigosRespuesta.Ok + " "+cantidadSesiones+" Sesiones");
-								pw.flush();
-								
+								EnviarMensaje(TipoRespuesta.Ok, palabras[0], CodigosRespuesta.OK,cantidadSesiones+ " Sesiones");
 							
 							break;
 							case "ADDCLUB":
@@ -75,9 +74,44 @@ public class HiloServidorComandos extends Thread{
 								
 								break;
 								
-							case "GETCLUB":
-								pw.println("comando no hecho todavia");
-								pw.flush();
+							case "GETCLUB": //<number> GETCLUB <id>
+								
+								if(palabras.length<3)///COMANDO INVALIDO
+								{
+									pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.BADREQUEST + " Comando Invalido. Usa el comando PASS");
+									pw.flush();
+								}
+								else
+								{
+									int puerto = this.servidor.getPuertoCanalDatos();
+									
+									if(puerto==-1)
+									{
+										//TODO: maybe check + try with only 2/1 ports
+										pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.NOTFOUND + " no hay puertos disponibles de datos");
+										pw.flush();
+									}
+									else
+									{
+										
+										
+										Club clubbuscado = this.servidor.getClubbyId(palabras[2]);
+										
+										if(clubbuscado==null)
+											pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.NOTFOUND + " No se encontró el dato buscado");
+										else
+											pw.println("PREOK "+ palabras[0] + " "+ CodigosRespuesta.OK + "127.0.0.1 "+puerto);
+										pw.flush();
+										
+									
+										if(clubbuscado!=null)
+											(new HiloServidorCanalDatos(this, puerto,clubbuscado)).start(); //envio el dato
+									}
+								}
+								
+								
+								
+								
 								
 								
 								
@@ -86,8 +120,7 @@ public class HiloServidorComandos extends Thread{
 							case "REMOVECLUB":
 								if(palabras.length<3)///COMANDO INVALIDO
 								{
-									pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.FAILED + "Comando Invalido. Usa el comando PASS");
-									pw.flush();
+									EnviarMensaje(TipoRespuesta.FAILED, palabras[0], CodigosRespuesta.BADREQUEST, "Faltan parametros");
 								} 
 								else {
 									boolean Bandera= false;
@@ -100,8 +133,8 @@ public class HiloServidorComandos extends Thread{
 											Bandera= true;
 										}
 										if(Bandera==false) {
-										pw.println("No se ha podido borrar");
-										pw.flush();
+											pw.println("No se ha podido borrar");
+											pw.flush();
 										}
 									}	
 								}
@@ -139,7 +172,7 @@ public class HiloServidorComandos extends Thread{
 							case "REMOVEJUGADOR":
 								if(palabras.length<3)///COMANDO INVALIDO
 								{
-									pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.FAILED + "Comando Invalido. Usa el comando PASS");
+									pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.BADREQUEST + "Comando Invalido. Usa el comando PASS");
 									pw.flush();
 								} 
 								else {
@@ -199,7 +232,7 @@ public class HiloServidorComandos extends Thread{
 								
 							default:
 								
-								pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.FAILED + "Comando Invalido. Usa un comando valido (SESIONES)");
+								pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.BADREQUEST + "Comando Invalido. Usa un comando valido (SESIONES)");
 								pw.flush();
 								
 							break;
@@ -229,8 +262,7 @@ public class HiloServidorComandos extends Thread{
 				{
 					if(palabras[2].equals("admin"))
 					{
-						pw.println("OK "+ palabras[0] + " "+ CodigosRespuesta.Ok + " Envie contraseña");
-						pw.flush();
+						this.EnviarMensaje(TipoRespuesta.Ok,palabras[0],CodigosRespuesta.OK, "Envie contraseña");
 						while(true)
 						{
 							
@@ -245,50 +277,42 @@ public class HiloServidorComandos extends Thread{
 							{
 								if(palabras[2].equals("admin"))
 								{
-									pw.println("OK "+ palabras[0] + " "+ CodigosRespuesta.Ok + " Welcome admin");
-									pw.flush();
+									this.EnviarMensaje(TipoRespuesta.Ok,palabras[0],CodigosRespuesta.OK, "Welcome admin");
 									return true; ///LOGIN EXITOSO
-									
 								}
 								else
 								{
-									pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.FAILED + " Prueba de nuevo");
-									pw.flush();
+									this.EnviarMensaje(TipoRespuesta.FAILED,palabras[0],CodigosRespuesta.NOTFOUND , "Prueba de nuevo");
 								}
 							}
 							else
 							{
 								////TODO comando invalido
-								pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.FAILED + " Comando Invalido. Usa el comando PASS");
-								pw.flush();
+								this.EnviarMensaje(TipoRespuesta.FAILED,palabras[0],CodigosRespuesta.BADREQUEST, "Comando Invalido. Usa el comando PASS");
 							}
 						}
 					}
 					else
 					{
-						pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.FAILED + " Not user.");
-						pw.flush();
+						this.EnviarMensaje(TipoRespuesta.FAILED,palabras[0],CodigosRespuesta.NOTFOUND, "Not user");
 					}
 				}
 				else
 				{
 					//TODO Comando invalido
-					pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.FAILED + " Comando Invalido. Usa el comando USER");
-					pw.flush();
+					this.EnviarMensaje(TipoRespuesta.FAILED,palabras[0],CodigosRespuesta.BADREQUEST, "Comando Invalido. Usa el comando USER");
 				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
 		}
 	}
-
-	///TODO: Decidir forma de hacer exit!
+	
 	public boolean esExit(String[] palabras)
 	{
 		if(palabras.length>=2 && palabras[1].equals("EXIT") )
 		{
-			pw.println("OK "+ palabras[0] + " "+ CodigosRespuesta.Ok + " Bye");
-			pw.flush();
+			this.EnviarMensaje(TipoRespuesta.Ok,palabras[0],CodigosRespuesta.OK, "Bye");
 			
 			this.servidor.eliminarCliente(this);  ///Elimino de la lista de clientes del servidor
 			
@@ -305,5 +329,11 @@ public class HiloServidorComandos extends Thread{
 		return false;
 	}
 	
+	public void EnviarMensaje(TipoRespuesta tipoRespuesta, String IdPeticion, CodigosRespuesta codigo, String informacionAdicional)
+	{
+		String mensajeCompleto = String.format("{0} {1} {2} {3}", tipoRespuesta, IdPeticion, codigo.getCode(), informacionAdicional);
+		pw.println(mensajeCompleto);
+		pw.flush();
+	}
 }
 			

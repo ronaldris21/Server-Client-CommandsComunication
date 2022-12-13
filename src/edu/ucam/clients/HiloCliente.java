@@ -2,7 +2,10 @@ package edu.ucam.clients;
 
 
 import java.io.BufferedReader;
+import java.io.ObjectInputStream;
 import java.net.Socket;
+
+import edu.ucam.domain.Club;
 
 public class HiloCliente extends Thread {
 
@@ -33,8 +36,10 @@ public class HiloCliente extends Thread {
 				String[] palabras = lineaRespuesta.split(" ");	
 				if(palabras.length >= 5 && palabras[0] == "PREOK" ) 
 				{
-					///LANZO nuevo HILO COMANDOS!
-					//Se conecta el socket
+					String host = palabras[3];
+					int puerto = Integer.parseInt(palabras[4]); 
+					Socket socketDatos =  new Socket(lineaRespuesta, puerto);
+					
 				}
 			} catch (Exception e) {
 			}
