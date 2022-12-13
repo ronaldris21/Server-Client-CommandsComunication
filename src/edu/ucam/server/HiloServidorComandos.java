@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Iterator;
 
 import edu.ucam.domain.Club;
 import edu.ucam.domain.CodigosRespuesta;
 import edu.ucam.domain.TipoRespuesta;
+import edu.ucam.domain.Jugador;
 
 public class HiloServidorComandos extends Thread{
 
@@ -36,12 +38,31 @@ public class HiloServidorComandos extends Thread{
 			while(true)
 			{
 				try {
+					System.out.println("CLUBES");
+					for (Club c1 :  this.servidor.getClub()) {
+						System.out.println(c1.getId()+ " "+ c1.getNombre());
+						for (Jugador j1 : c1.getJugadores()) {
+							System.out.println("\t"+j1.getId()+ " "+ j1.getNombre());
+						}
+					}
+					
+					System.out.println();
+					System.out.println("JUGADORES");
+					
+					for (Jugador j1 : this.servidor.getJugador()) {
+						System.out.println(j1.getId()+ " "+ j1.getNombre());
+					}
+					
+					
 					String comando = br.readLine();
 					System.out.println(comando);
 					String[] palabras = comando.split(" ");
 					
 					if(esExit(palabras))
 						return;
+					
+					
+					
 					
 					
 					
@@ -132,11 +153,12 @@ public class HiloServidorComandos extends Thread{
 											pw.flush();
 											Bandera= true;
 										}
-										if(Bandera==false) {
-											pw.println("No se ha podido borrar");
-											pw.flush();
+										
+									}
+									if(Bandera==false) {
+										pw.println("No se ha podido borrar");
+										pw.flush();
 										}
-									}	
 								}
 								
 								break;
@@ -205,19 +227,93 @@ public class HiloServidorComandos extends Thread{
 								break;
 								
 							case "ADDJUGADOR2CLUB":
-								pw.println("comando no hecho todavia");
-								pw.flush();
+								if(palabras.length<4)///COMANDO INVALIDO
+								{
+									pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.FAILED + "Comando Invalido. Usa el comando PASS");
+									pw.flush();
+								} 
+								else {
+									
+									Jugador j= null;
+									Club c= null;
+									
+									for (int i=0; i<this.servidor.getClub().size();i++) {
+								
+										if(palabras[2].equals(this.servidor.getClub().get(i).getId())){
+											
+											c= this.servidor.getClub().get(i);
+											
+										}
+										
+									}
+								
+									
+									for (int i=0; i<this.servidor.getJugador().size();i++) {
+										
+										if(palabras[3].equals(this.servidor.getJugador().get(i).getId())){
+											
+											j= this.servidor.getJugador().get(i);
+											
+										}
+										
+									}
+									
+									if(j!=null&&c!=null) {
+										c.addJugador(j.getId(), j);
+										this.servidor.getJugador().remove(j);
+										pw.println("Añadido");
+										pw.flush();
+									}else {
+										pw.println("No se ha podido añadir");
+										pw.flush();
+									}
+								}
 								
 								
 								
 								break;
 								
 							case "REMOVEJUGFROMCLUB":
+								Boolean Bandera= false;
+								if(palabras.length<4)///COMANDO INVALIDO
+								{
+									pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.FAILED + "Comando Invalido. Usa el comando PASS");
+									pw.flush();
+								} 
+								else {
+									
+									
+									Club c= null;
+									
+									for (int i=0; i<this.servidor.getClub().size();i++) {
 								
-								pw.println("comando no hecho todavia");
-								pw.flush();
-								
-								
+										if(palabras[2].equals(this.servidor.getClub().get(i).getId())){
+											
+											c= this.servidor.getClub().get(i);
+											for (int ii=0; ii<c.getJugadores().size();ii++) {
+												
+												if(palabras[3].equals( c.getJugadores().get(ii).getId())){
+													
+													c.getJugadores().remove(ii);
+													pw.println("Borrado");
+													pw.flush();
+													Bandera= true;
+													break;
+												}
+												
+											
+										}
+										
+											
+										}
+										
+									}
+									
+								}
+								if(Bandera==false) {
+									pw.println("No se ha podido borrar");
+									pw.flush();
+								}
 								break;
 
 							case "LISTJUGFROMCLUB":
@@ -249,6 +345,7 @@ public class HiloServidorComandos extends Thread{
 	
 
 	private boolean login() {
+
 		while(true)
 		{
 			try {
