@@ -229,8 +229,7 @@ public class HiloServidorComandos extends Thread{
 							case "ADDJUGADOR2CLUB":
 								if(palabras.length<4)///COMANDO INVALIDO
 								{
-									pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.FAILED + "Comando Invalido. Usa el comando PASS");
-									pw.flush();
+									this.EnviarMensaje(TipoRespuesta.FAILED, palabras[0], CodigosRespuesta.BADREQUEST,"Faltan parametros");
 								} 
 								else {
 									
@@ -277,12 +276,9 @@ public class HiloServidorComandos extends Thread{
 								Boolean Bandera= false;
 								if(palabras.length<4)///COMANDO INVALIDO
 								{
-									pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.FAILED + "Comando Invalido. Usa el comando PASS");
-									pw.flush();
+									this.EnviarMensaje(TipoRespuesta.FAILED,palabras[0],CodigosRespuesta.BADREQUEST, "Faltan parametros");
 								} 
 								else {
-									
-									
 									Club c= null;
 									
 									for (int i=0; i<this.servidor.getClub().size();i++) {

@@ -21,7 +21,8 @@ public class HiloCliente extends Thread {
 	{
 		while(true)
 		{
-			try {
+			try 
+			{
 				if (!cliente.isActive())
 				{
 					this.cliente.getSocket().close();

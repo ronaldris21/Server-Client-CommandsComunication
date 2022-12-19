@@ -25,7 +25,6 @@ public class Servidor {
 	
 	
 	public Servidor() {
-		
 		///PUERTOS DISPONIBLES para canal de datos
 		this.lpuertosDisponibles =  new Boolean[3000]; //5100+3000= 
 		for (int i = 0; i < 3000; i++) {

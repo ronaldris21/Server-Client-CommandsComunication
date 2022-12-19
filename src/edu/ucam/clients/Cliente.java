@@ -16,6 +16,12 @@ public class Cliente {
 	
 	private Boolean isActive = true;
 	private Socket socket;
+	private String comando;
+	
+	public String getComando()
+	{
+		return this.comando;
+	}
 	
 	
 	public Socket getSocket() {
@@ -62,7 +68,7 @@ public class Cliente {
 				if(!isActive())
 					return;
 				try {
-					String comando =  teclado.nextLine();
+					comando =  teclado.nextLine();
 					pw.println(comando);
 					pw.flush();	
 					
