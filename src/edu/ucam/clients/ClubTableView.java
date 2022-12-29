@@ -23,11 +23,24 @@ public class ClubTableView extends javax.swing.JFrame {
 
     ArrayList<Club> lista = new ArrayList<>();
     
+    public ClubTableView(Club club)
+    {
+    	initComponents();
+        
+        lista = new ArrayList<Club>();
+        this.lista.add(club);
+
+        this.mostrarDatos();
+    }
+    
+    
     public ClubTableView(ArrayList<Club> clubes) {
         initComponents();
         
+        if(clubes == null)
+        	clubes = new ArrayList<Club>();
         lista = clubes;
-        DefaultTableModel model = new DefaultTableModel();
+        
         this.mostrarDatos();
     }
 
@@ -84,7 +97,6 @@ public class ClubTableView extends javax.swing.JFrame {
         			.addContainerGap())
         );
         getContentPane().setLayout(layout);
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -133,7 +145,7 @@ public class ClubTableView extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ClubTableView(null).setVisible(true);
+                new ClubTableView(new ArrayList<Club>()).setVisible(true);
             }
         });
     }

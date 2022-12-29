@@ -6,7 +6,8 @@ public enum CodigosRespuesta {
 	OK(200),
 	CREATED(201),
 	BADREQUEST(400),
-	NOTFOUND(404)
+	NOTFOUND(404),
+	INTERNAL_SERVER_ERROR(500)
 	
 	;
 	

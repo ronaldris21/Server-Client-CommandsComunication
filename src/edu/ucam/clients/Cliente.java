@@ -3,15 +3,26 @@ package edu.ucam.clients;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
+import edu.ucam.domain.Club;
 import edu.ucam.domain.CodigosRespuesta;
+import edu.ucam.domain.Jugador;
+import edu.ucam.domain.TipoRespuesta;
+import edu.ucam.server.HiloServidorCanalDatos;
 
 public class Cliente {
+
+	
+	///TODO: EXIT_ON_CLOSE         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 	
 	private Boolean isActive = true;
@@ -42,11 +53,6 @@ public class Cliente {
 		isActive = status;
 	}
 	
-	
-	
-	
-	
-	
 	public void ejecutar()
 	{
 		try {
@@ -75,7 +81,6 @@ public class Cliente {
 					String[] palabras = comando.split(" ");
 					if(palabras.length>2 && palabras[1].equals("EXIT"))
 						this.SetisActive(false);
-					
 					
 				} catch (Exception e) {} //En caso que el servidor cierre el socket!
 			}
