@@ -167,6 +167,7 @@ public class HiloCliente extends Thread {
 				System.out.println("FALTA");
 				
 				///Openview
+				(new AnadirJugador(socketDatos)).setVisible(true);;
 				///Send Data
 				
 				break;
