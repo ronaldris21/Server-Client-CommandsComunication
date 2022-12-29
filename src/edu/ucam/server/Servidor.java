@@ -130,7 +130,6 @@ public class Servidor {
 	
 	public int getPuertoCanalDatos()
 	{
-		int puerto = 0;
 		
 		for (int i = 0; i < lpuertosDisponibles.length; i++) {
 			if(this.lpuertosDisponibles[i])
