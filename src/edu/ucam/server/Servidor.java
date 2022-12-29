@@ -15,79 +15,59 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * @author ronal
+ *
+ */
 public class Servidor {
 	
 	private ArrayList<HiloServidorComandos> hilosClientes;
 	private ArrayList<Club> club;
 	private ArrayList <Jugador> jugador;
 	private Boolean[] lpuertosDisponibles;
+	private int counterJugadores;
+	private int counterClubes;
+	static int PUERTOINICIALDATOS = 5001;
 	
 	
 	
 	public Servidor() {
+
+		this.hilosClientes =  new ArrayList<HiloServidorComandos>();
+		this.club =  new ArrayList<Club>();
+		this.jugador = new ArrayList<Jugador>();
+		
+		this.counterClubes = 0;
+		this.counterJugadores = 0;
+		
+		this.agregarClubServidor("Real Murcia");
+		this.agregarClubServidor("Real Madrid");
+		
+		
+		this.agregarJugadorServidor("Quintana","Dante", 10);
+		this.agregarJugadorServidor("Ronald","Tejada", 7);
+		this.agregarJugadorServidor("Paul","Atreides", 4);
+		
+		///INIT PUERTOS
 		///PUERTOS DISPONIBLES para canal de datos
-		this.lpuertosDisponibles =  new Boolean[3000]; //5100+3000= 
+		this.lpuertosDisponibles =  new Boolean[5000]; //5000 puertos disponibles
 		for (int i = 0; i < 3000; i++) {
 			this.lpuertosDisponibles[i] = true;
 		}
+		//Quito puertos importantes
 		//Puertos 5400, 5500, 5600, 5700, 5800 y 5900 Son usados por el programa VNC, que también sirve para controlar equipos remotamente.
 		//Puertos 6881 y 6969: Son usados por el programa BitTorrent, que sirve para e intercambio de ficheros.
 		//Puerto 8080 y 8000: es el puerto alternativo al puerto 80 TCP para servidores web, normalmente se utiliza este puerto en pruebas.
-		this.lpuertosDisponibles[300] = false; //5400
-		this.lpuertosDisponibles[400] = false; //5500
-		this.lpuertosDisponibles[500] = false; //5600
-		this.lpuertosDisponibles[600] = false; //5700
-		this.lpuertosDisponibles[700] = false; //5800
-		this.lpuertosDisponibles[800] = false; //5900
-		this.lpuertosDisponibles[1781] = false; //6881
-		this.lpuertosDisponibles[1869] = false; //6969
-		this.lpuertosDisponibles[2900] = false; //8000
-		this.lpuertosDisponibles[2980] = false; //8080
-		
-		
-		
-		
-		
-		
-		this.hilosClientes =  new ArrayList<HiloServidorComandos>();
-		setClub(new ArrayList<Club>());
-		setJugador(new ArrayList<Jugador>());
-		
-		Club c1= new Club();
-		c1.setId("0");
-		c1.setNombre("Real Murcia");
-		club.add(c1);
-		Club c2= new Club();
-		c2.setId("1");
-		c2.setNombre("Real Madrid");
-		club.add(c2);
-		Jugador j1 = new Jugador();
-		j1.setId("1");
-		j1.setApellidos("Quintana");
-		j1.setNombre("Dante");
-		j1.setGoles(10);
-		jugador.add(j1);
-		Jugador j2 = new Jugador();
-		j2.setId("2");
-		j2.setApellidos("Tejada");
-		j2.setNombre("Ronald");
-		j2.setGoles(7);
-		jugador.add(j2);
-		Jugador j3 = new Jugador();
-		j3.setId("0");
-		j3.setApellidos("Cano");
-		j3.setNombre("Pablo");
-		j3.setGoles(6);
-		jugador.add(j3);
-		Jugador j4 = new Jugador();
-		j4.setId("3");
-		j4.setApellidos("Atreides");
-		j4.setNombre("Paul");
-		j4.setGoles(4);
-		jugador.add(j4);
-
-		
-		
+		this.lpuertosDisponibles[5400 -  PUERTOINICIALDATOS] = false; //5400
+		this.lpuertosDisponibles[5500 - PUERTOINICIALDATOS] = false; //5500
+		this.lpuertosDisponibles[5600 - PUERTOINICIALDATOS] = false; //5600
+		this.lpuertosDisponibles[5700 - PUERTOINICIALDATOS] = false; //5700
+		this.lpuertosDisponibles[5800 - PUERTOINICIALDATOS] = false; //5800
+		this.lpuertosDisponibles[5900 - PUERTOINICIALDATOS] = false; //5900
+		this.lpuertosDisponibles[6881 - PUERTOINICIALDATOS] = false; //6881
+		this.lpuertosDisponibles[6969 - PUERTOINICIALDATOS] = false; //6969
+		this.lpuertosDisponibles[8000 - PUERTOINICIALDATOS] = false; //8000
+		this.lpuertosDisponibles[8080 - PUERTOINICIALDATOS] = false; //8080
 	}
 	
 	
@@ -118,17 +98,18 @@ public class Servidor {
 				HiloServidorComandos 	hilo = new HiloServidorComandos(this,socket,br,pw);
 				hilo.start();
 				hilosClientes.add(hilo);
-			}catch(Exception e)
+			}
+			catch(Exception e)
 			{
 				
+				
 			}
-			
 		}
 		
 		
 	}
 	
-	public int getPuertoCanalDatos()
+	public int getPuertoCanalDatosDisponible()
 	{
 		int puerto = 0;
 		
@@ -136,32 +117,63 @@ public class Servidor {
 			if(this.lpuertosDisponibles[i])
 			{
 				this.lpuertosDisponibles[i] = false;
-				return i+5100; 
+				return i+PUERTOINICIALDATOS; 
 			}
 		}
-		return -1; ///no encontrado
+		///Si no hay disponibles, por defecto que se vaya en el primer canal
+		return PUERTOINICIALDATOS; ///no encontrado
 	}
 	
 	public void SetPuertoDisponible(int puerto, boolean status)
 	{
-		puerto = puerto - 5100;
-		if(puerto>=0 && puerto<3000)
+		puerto = puerto - PUERTOINICIALDATOS;
+		if(puerto>=0 && puerto<lpuertosDisponibles.length)
 			this.lpuertosDisponibles[puerto] = status;
 	}
 	
-	////GETTERS AND SETTERS
-	public ArrayList<HiloServidorComandos> getHilosClientes() {
-		return hilosClientes;
-	}
-
-
-	public void setHilosClientes(ArrayList<HiloServidorComandos> hilosClientes) {
-		this.hilosClientes = hilosClientes;
+	
+	
+	public void agregarJugadorServidor(Jugador j)
+	{
+		this.agregarJugadorServidor(j.getNombre(), j.getApellidos(), j.getGoles());
+		
 	}
 	
+	public void agregarJugadorServidor(String nombre, String apellidos, int goles)
+	{
+		Jugador j = new Jugador(String.valueOf(++this.counterJugadores), nombre, apellidos, goles);
+		this.jugador.add(j);
+	}
 	
+	public void agregarClubServidor(String nombre)
+	{
+		Club c = new Club(String.valueOf(++this.counterClubes), nombre);
+		this.club.add(c);
+	}
+	
+	public Club getClubById(String idClub) {
+		for(Club c : this.club)
+		{
+			if(c.getId().equals(idClub))
+				return c;
+		}
+		return null;
+	}
+	
+	public Jugador getJugadorById(String idJugador)
+	{
+		for(Jugador j : this.jugador)
+		{
+			if(j.getId().equals(idJugador))
+				return j;
+		}
+		return null;
+	}
 	
 
+	
+	
+	
 
 	public static void main(String[] args) {
 		//Inicio el serverSocket de commandos
@@ -170,34 +182,22 @@ public class Servidor {
 	}
 
 
-	public ArrayList<Club> getClub() {
-		return club;
-	}
 
 
-	public void setClub(ArrayList<Club> club) {
+	////GETTERS AND SETTERS
+	public ArrayList<HiloServidorComandos> getHilosClientes() { return hilosClientes;}
+	public ArrayList<Club> getClubes() { return club;}
+	public ArrayList <Jugador> getJugadores() { return jugador;}
+	
+	
+	public void setClubes(ArrayList<Club> club) {
 		this.club = club;
 	}
 
-
-	public ArrayList <Jugador> getJugador() {
-		return jugador;
-	}
-
-
-	public void setJugador(ArrayList <Jugador> jugador) {
+	public void setJugadores(ArrayList <Jugador> jugador) {
 		this.jugador = jugador;
 	}
 
-
-	public Club getClubbyId(String idClub) {
-		for(Club c : this.club)
-		{
-			if(c.getId().equals(idClub))
-				return c;
-		}
-		return null;
-	}
 	
 	
 	

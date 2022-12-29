@@ -18,6 +18,11 @@ public class HiloServidorComandos extends Thread{
 	private Socket socket;
 	private BufferedReader br;
 	private PrintWriter pw;
+	
+	///TODO: manejar si el servidor se cierra abruptamente
+	
+	public PrintWriter getPrintWriter(){ return this.pw; }
+	public Servidor getServidor() { return this.servidor; }
 
 	public HiloServidorComandos(Servidor servidor, Socket socket, BufferedReader br, PrintWriter pw) {
 		this.servidor = servidor;
@@ -25,7 +30,7 @@ public class HiloServidorComandos extends Thread{
 		this.br = br;
 		this.pw = pw;
 	}
-
+	
 	
 	public void run()
 	{
@@ -34,12 +39,11 @@ public class HiloServidorComandos extends Thread{
 		
 		if(login())
 		{
-			////Aqui vamos a gestionar los comandos cuando ya inicio sesion
 			while(true)
 			{
 				try {
 					System.out.println("CLUBES");
-					for (Club c1 :  this.servidor.getClub()) {
+					for (Club c1 :  this.servidor.getClubes()) {
 						System.out.println(c1.getId()+ " "+ c1.getNombre());
 						for (Jugador j1 : c1.getJugadores()) {
 							System.out.println("\t"+j1.getId()+ " "+ j1.getNombre());
@@ -49,7 +53,7 @@ public class HiloServidorComandos extends Thread{
 					System.out.println();
 					System.out.println("JUGADORES");
 					
-					for (Jugador j1 : this.servidor.getJugador()) {
+					for (Jugador j1 : this.servidor.getJugadores()) {
 						System.out.println(j1.getId()+ " "+ j1.getNombre());
 					}
 					
@@ -63,9 +67,6 @@ public class HiloServidorComandos extends Thread{
 					
 					
 					
-					
-					
-					
 					if(palabras.length<2)///COMANDO INVALIDO
 					{
 						EnviarMensaje(TipoRespuesta.FAILED, palabras[0], CodigosRespuesta.BADREQUEST, "Faltan parametros");
@@ -75,264 +76,171 @@ public class HiloServidorComandos extends Thread{
 						switch(palabras[1])
 						{
 							case "SESIONES":
-								
 								int cantidadSesiones = this.servidor.getHilosClientes().size();
-								EnviarMensaje(TipoRespuesta.Ok, palabras[0], CodigosRespuesta.OK,cantidadSesiones+ " Sesiones");
+								EnviarMensaje(TipoRespuesta.OK, palabras[0], CodigosRespuesta.OK,cantidadSesiones+ " Sesiones");
 							
 							break;
 							case "ADDCLUB":
-								pw.println("comando no hecho todavia");
-								pw.flush();
-								
+								(new HiloServidorCanalDatos(this,palabras[0], null ,true)).start(); //envio el dato
 								
 								
 							break;
-							case "UPDATECLUB":
-								pw.println("comando no hecho todavia");
-								pw.flush();
-								
-								
-								
+							case "UPDATECLUB": //<number> UPDATECLUB <id>
+								if(palabras.length<3)
+									EnviarMensaje(TipoRespuesta.FAILED, palabras[0],CodigosRespuesta.BADREQUEST, "Faltan parametros");
+								else
+								{
+									Club clubbuscado = this.servidor.getClubById(palabras[2]);
+									
+									if(clubbuscado!=null)
+										(new HiloServidorCanalDatos(this,palabras[0],clubbuscado,true)).start(); //envio el dato
+									else
+										this.EnviarMensaje(TipoRespuesta.FAILED,palabras[0], CodigosRespuesta.NOTFOUND , "No se encontró el dato buscado");
+								}
 								break;
 								
 							case "GETCLUB": //<number> GETCLUB <id>
 								
-								if(palabras.length<3)///COMANDO INVALIDO
-								{
-									pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.BADREQUEST + " Comando Invalido. Usa el comando PASS");
-									pw.flush();
-								}
+								if(palabras.length<3)
+									EnviarMensaje(TipoRespuesta.FAILED, palabras[0],CodigosRespuesta.BADREQUEST, "Faltan parametros");
 								else
 								{
-									int puerto = this.servidor.getPuertoCanalDatos();
+									Club clubbuscado = this.servidor.getClubById(palabras[2]);
 									
-									if(puerto==-1)
-									{
-										//TODO: maybe check + try with only 2/1 ports
-										pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.NOTFOUND + " no hay puertos disponibles de datos");
-										pw.flush();
-									}
+									if(clubbuscado!=null)
+										(new HiloServidorCanalDatos(this,palabras[0],clubbuscado,false)).start(); //envio el dato
 									else
-									{
-										
-										
-										Club clubbuscado = this.servidor.getClubbyId(palabras[2]);
-										
-										if(clubbuscado==null)
-											pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.NOTFOUND + " No se encontró el dato buscado");
-										else
-											pw.println("PREOK "+ palabras[0] + " "+ CodigosRespuesta.OK + "127.0.0.1 "+puerto);
-										pw.flush();
-										
-									
-										if(clubbuscado!=null)
-											(new HiloServidorCanalDatos(this, puerto,clubbuscado)).start(); //envio el dato
-									}
+										this.EnviarMensaje(TipoRespuesta.FAILED,palabras[0], CodigosRespuesta.NOTFOUND , "No se encontró el dato buscado");
 								}
 								
-								
-								
-								
-								
-								
-								
 								break;
-								
-							case "REMOVECLUB":
-								if(palabras.length<3)///COMANDO INVALIDO
+							case "REMOVECLUB": //<number> REMOVECLUB <id> 
+								if(palabras.length<3)
+									EnviarMensaje(TipoRespuesta.FAILED, palabras[0],CodigosRespuesta.BADREQUEST, "Faltan parametros");
+								else 
 								{
-									EnviarMensaje(TipoRespuesta.FAILED, palabras[0], CodigosRespuesta.BADREQUEST, "Faltan parametros");
-								} 
-								else {
-									boolean Bandera= false;
-									for (int i=0; i<this.servidor.getClub().size();i++) {
-									
-										if(palabras[2].equals(this.servidor.getClub().get(i).getId())) {
-											this.servidor.getClub().remove(i);
-											pw.println("Borrado");
-											pw.flush();
-											Bandera= true;
-										}
-										
-									}
-									if(Bandera==false) {
-										pw.println("No se ha podido borrar");
-										pw.flush();
-										}
+									if (this.servidor.getClubes().removeIf(c-> c.getId().equals(palabras[2]))) 
+										EnviarMensaje(TipoRespuesta.OK, palabras[0], CodigosRespuesta.OK , "Club Eliminado");
+									else
+										EnviarMensaje(TipoRespuesta.FAILED, palabras[0], CodigosRespuesta.NOTFOUND , "No se encontro el club");
 								}
 								
 								break;
 							case "LISTCLUBES":
-								pw.println("comando no hecho todavia");
-								pw.flush();
-								
-								
-								
+								(new HiloServidorCanalDatos(this,palabras[0], this.servidor.getClubes() ,false)).start(); //envio el dato
+						
 								break;
 							case "COUNTCLUBES":
-								pw.println("comando no hecho todavia");
-								pw.flush();
+								EnviarMensaje(TipoRespuesta.OK,palabras[0],CodigosRespuesta.OK, String.valueOf(this.servidor.getClubes().size()));
+								
+								break;
+							case "ADDJUGADOR": //<number> ADDJUGADOR
+								
+								(new HiloServidorCanalDatos(this, palabras[0], null, true)).start();
+								
+								break;
+							case "GETJUGADOR": 
+								
+								(new HiloServidorCanalDatos(this, palabras[0], null, true)).start();
+								
 								
 								
 								
 								break;
-							case "ADDJUGADOR":
-								pw.println("comando no hecho todavia");
-								pw.flush();
-								
-								
-								
-								break;
-							case "GETJUGADOR":
-								pw.println("comando no hecho todavia");
-								pw.flush();
-								
-								
-								
-								break;
-								
-							case "REMOVEJUGADOR":
-								if(palabras.length<3)///COMANDO INVALIDO
+							case "REMOVEJUGADOR": //<number> REMOVEJUGADOR <id>
+								if(palabras.length<3)
+									EnviarMensaje(TipoRespuesta.FAILED, palabras[0],CodigosRespuesta.BADREQUEST, "Faltan parametros");
+								else 
 								{
-									pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.BADREQUEST + "Comando Invalido. Usa el comando PASS");
-									pw.flush();
-								} 
-								else {
 									boolean Bandera= false;
-									for (int i=0; i<this.servidor.getJugador().size();i++) {
+									for (int i=0; i<this.servidor.getJugadores().size();i++) {
 									
-										if(palabras[2].equals(this.servidor.getJugador().get(i).getId())) {
-											this.servidor.getJugador().remove(i);
-											pw.println("Borrado");
-											pw.flush();
+										if(palabras[2].equals(this.servidor.getJugadores().get(i).getId())) {
+											this.servidor.getJugadores().remove(i);
+											EnviarMensaje(TipoRespuesta.OK,palabras[0],CodigosRespuesta.OK, "Borrado");
 											Bandera= true;
+											break;
 										}
-										
 									}
-									if(Bandera==false) {
-										pw.println("No se ha podido borrar");
-										pw.flush();
-									}
+									if(Bandera==false) 
+										EnviarMensaje(TipoRespuesta.FAILED,palabras[0],CodigosRespuesta.NOTFOUND, "No se encontro el elemento");
 								}
 								
 								
 								break;
-								
 							case "LISTJUGADORES":
-								
-								pw.println("comando no hecho todavia");
-								pw.flush();
+								(new HiloServidorCanalDatos(this, palabras[0], this.servidor.getJugadores(), false)).start();
 								
 								
 								break;
+							case "ADDJUGADOR2CLUB": //<number>  ADDJUGADOR2CLUB <idjugador> <idclub> 
+								if(palabras.length<4)
+									EnviarMensaje(TipoRespuesta.FAILED, palabras[0],CodigosRespuesta.BADREQUEST, "Faltan parametros");
 								
-							case "ADDJUGADOR2CLUB":
-								if(palabras.length<4)///COMANDO INVALIDO
+								else 
 								{
-									this.EnviarMensaje(TipoRespuesta.FAILED, palabras[0], CodigosRespuesta.BADREQUEST,"Faltan parametros");
-								} 
-								else {
 									
-									Jugador j= null;
-									Club c= null;
+									Jugador j= this.servidor.getJugadorById(palabras[2]);
+									Club c= this.servidor.getClubById(palabras[3]);
 									
-									for (int i=0; i<this.servidor.getClub().size();i++) {
-								
-										if(palabras[2].equals(this.servidor.getClub().get(i).getId())){
-											
-											c= this.servidor.getClub().get(i);
-											
-										}
-										
-									}
-								
-									
-									for (int i=0; i<this.servidor.getJugador().size();i++) {
-										
-										if(palabras[3].equals(this.servidor.getJugador().get(i).getId())){
-											
-											j= this.servidor.getJugador().get(i);
-											
-										}
-										
-									}
-									
-									if(j!=null&&c!=null) {
+									if(j!=null && c!=null) 
+									{
 										c.addJugador(j.getId(), j);
-										this.servidor.getJugador().remove(j);
-										pw.println("Añadido");
-										pw.flush();
-									}else {
-										pw.println("No se ha podido añadir");
-										pw.flush();
+										this.servidor.getJugadores().remove(j);
+										EnviarMensaje(TipoRespuesta.OK, palabras[0],CodigosRespuesta.OK, "Jugador añadido");
 									}
+									else 
+										EnviarMensaje(TipoRespuesta.FAILED, palabras[0],CodigosRespuesta.BADREQUEST, "No se ha podido añadir");
 								}
 								
-								
-								
 								break;
-								
-							case "REMOVEJUGFROMCLUB":
+							case "REMOVEJUGFROMCLUB": //<number>  REMOVEJUGFROMCLUB <idjugador> <idclub>
 								Boolean Bandera= false;
-								if(palabras.length<4)///COMANDO INVALIDO
+								if(palabras.length<4)
+									EnviarMensaje(TipoRespuesta.FAILED, palabras[0],CodigosRespuesta.BADREQUEST, "Faltan parametros");
+								else
 								{
-									this.EnviarMensaje(TipoRespuesta.FAILED,palabras[0],CodigosRespuesta.BADREQUEST, "Faltan parametros");
-								} 
-								else {
-									Club c= null;
-									
-									for (int i=0; i<this.servidor.getClub().size();i++) {
+									Club c = this.servidor.getClubById(palabras[3]);
+									if(c!= null)
+										for (int ii=0; ii<c.getJugadores().size();ii++) 
+											if(palabras[3].equals( c.getJugadores().get(ii).getId()))
+											{
+												c.getJugadores().remove(ii);
+												EnviarMensaje(TipoRespuesta.OK, palabras[0],CodigosRespuesta.OK, "Jugador eliminado del equipo");
+												Bandera= true;
+												break;
+											}
+									if(Bandera==false) 
+										EnviarMensaje(TipoRespuesta.FAILED, palabras[0],CodigosRespuesta.NOTFOUND, "No es posible realizar la acción");
+								}
 								
-										if(palabras[2].equals(this.servidor.getClub().get(i).getId())){
-											
-											c= this.servidor.getClub().get(i);
-											for (int ii=0; ii<c.getJugadores().size();ii++) {
-												
-												if(palabras[3].equals( c.getJugadores().get(ii).getId())){
-													
-													c.getJugadores().remove(ii);
-													pw.println("Borrado");
-													pw.flush();
-													Bandera= true;
-													break;
-												}
-												
-											
-										}
-										
-											
-										}
-										
+								break;
+							case "LISTJUGFROMCLUB": //number>  LISTJUGFROMCLUB <idjugador>
+								if(palabras.length<3)
+									EnviarMensaje(TipoRespuesta.FAILED, palabras[0],CodigosRespuesta.BADREQUEST, "Faltan parametros");
+								else
+								{
+									Club clubbuscado = this.servidor.getClubById(palabras[2]);
+									if(clubbuscado!=null)
+									{
+										(new HiloServidorCanalDatos(this,palabras[0],clubbuscado.getJugadores(),false)).start(); //envio el dato
 									}
-									
+									else
+										this.EnviarMensaje(TipoRespuesta.FAILED,palabras[0], CodigosRespuesta.NOTFOUND , "No se encontró el dato buscado");
 								}
-								if(Bandera==false) {
-									pw.println("No se ha podido borrar");
-									pw.flush();
-								}
-								break;
-
-							case "LISTJUGFROMCLUB":
-								
-								pw.println("comando no hecho todavia");
-								pw.flush();
-								
 								
 								break;
-								
-								 
-								
 							default:
-								
-								pw.println("FAILED "+ palabras[0] + " "+ CodigosRespuesta.BADREQUEST + "Comando Invalido. Usa un comando valido (SESIONES)");
-								pw.flush();
-								
+								EnviarMensaje(TipoRespuesta.FAILED, palabras[0], CodigosRespuesta.BADREQUEST,"Comando Invalido");
 							break;
 							
 						}
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
+					System.out.println("Conexion finalizada abruptamente");
+					return;
+					
 				}  
 			}
 		}
@@ -344,7 +252,8 @@ public class HiloServidorComandos extends Thread{
 
 		while(true)
 		{
-			try {
+			try
+			{
 				String comando = br.readLine();  //<number> USER <name>
 				System.out.println(comando);
 				String[] palabras = comando.split(" ");
@@ -355,7 +264,7 @@ public class HiloServidorComandos extends Thread{
 				{
 					if(palabras[2].equals("admin"))
 					{
-						this.EnviarMensaje(TipoRespuesta.Ok,palabras[0],CodigosRespuesta.OK, "Envie contraseña");
+						this.EnviarMensaje(TipoRespuesta.OK,palabras[0],CodigosRespuesta.OK, "Envie contraseña");
 						while(true)
 						{
 							
@@ -370,7 +279,7 @@ public class HiloServidorComandos extends Thread{
 							{
 								if(palabras[2].equals("admin"))
 								{
-									this.EnviarMensaje(TipoRespuesta.Ok,palabras[0],CodigosRespuesta.OK, "Welcome admin");
+									this.EnviarMensaje(TipoRespuesta.OK,palabras[0],CodigosRespuesta.OK, "Welcome admin");
 									return true; ///LOGIN EXITOSO
 								}
 								else
@@ -392,23 +301,21 @@ public class HiloServidorComandos extends Thread{
 				}
 				else
 				{
-					//TODO Comando invalido
 					this.EnviarMensaje(TipoRespuesta.FAILED,palabras[0],CodigosRespuesta.BADREQUEST, "Comando Invalido. Usa el comando USER");
 				}
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
+				System.out.println("Conexion finalizada abruptamente");
+				return false;
 			}
 		}
 	}
 	
 	public boolean esExit(String[] palabras)
 	{
-		if(palabras.length>=2 && palabras[1].equals("EXIT") )
+		if((palabras.length>=2 && palabras[1].equals("EXIT")) )
 		{
-			this.EnviarMensaje(TipoRespuesta.Ok,palabras[0],CodigosRespuesta.OK, "Bye");
-			
+			this.EnviarMensaje(TipoRespuesta.OK,palabras[0],CodigosRespuesta.OK, "Bye");
 			this.servidor.eliminarCliente(this);  ///Elimino de la lista de clientes del servidor
-			
 			
 			try {
 				socket.shutdownOutput();
@@ -424,9 +331,8 @@ public class HiloServidorComandos extends Thread{
 	
 	public void EnviarMensaje(TipoRespuesta tipoRespuesta, String IdPeticion, CodigosRespuesta codigo, String informacionAdicional)
 	{
-		String mensajeCompleto = String.format("{0} {1} {2} {3}", tipoRespuesta, IdPeticion, codigo.getCode(), informacionAdicional);
+		String mensajeCompleto = String.format("%s %s %d %s", tipoRespuesta, IdPeticion, codigo.getCode(), informacionAdicional);
 		pw.println(mensajeCompleto);
 		pw.flush();
 	}
 }
-			
