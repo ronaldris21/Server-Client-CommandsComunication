@@ -100,7 +100,7 @@ public class HiloCliente extends Thread {
 			case "LISTCLUBES":
 				ArrayList<Club> listaC = (new ObjetosPorSocket<ArrayList<Club>>()).recibirObjeto(socketDatos);
 				(new ClubTableView(listaC)).setVisible(true);
-				
+
 				break;
 			
 			case "ADDJUGADOR":
