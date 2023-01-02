@@ -5,13 +5,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import edu.ucam.domain.*;
-
-import edu.ucam.domain.Club;
 
 public class HiloCliente extends Thread {
 
@@ -74,7 +69,6 @@ public class HiloCliente extends Thread {
 			case "UPDATECLUB":
 
 				System.out.println("FALTA");
-				///Receive data
 				///Open view
 				///Send Data to save
 				
@@ -100,17 +94,10 @@ public class HiloCliente extends Thread {
 				
 			case "GETCLUB": 
 
-				System.out.println("FALTA");
-				
-				
-				
 				try {
 					ios =  new ObjectInputStream(socketDatos.getInputStream());
 					Club c = (Club) ios.readObject(); 
-					System.out.println(c.getNombre());
-					System.out.println(c.getId());
-					System.out.println(c.getJugadores().size());
-					
+					(new ClubTableView(c)).setVisible(true);
 					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -120,61 +107,51 @@ public class HiloCliente extends Thread {
 					e.printStackTrace();
 				} 
 				
-				///Receive Data
-				///Open view
-				
-				
-				
-				
-				
 				break;
 		
 			case "LISTCLUBES":
-
-				System.out.println("FALTA");
-			
-			try {
-				ios = new ObjectInputStream(socketDatos.getInputStream());
 				try {
-					
-					ArrayList<Club> lista = (ArrayList<Club>) ios.readObject();
-					System.out.println(lista);
-					
-					
-					(new ClubTableView(lista)).setVisible(true);;
-					
-					
-					
-					
-					
-					
-					
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
+					ios = new ObjectInputStream(socketDatos.getInputStream());
+					try {
+						
+						ArrayList<Club> lista = (ArrayList<Club>) ios.readObject();
+						System.out.println(lista);
+						
+						
+						(new ClubTableView(lista)).setVisible(true);
+						
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					} 
+				} catch (IOException e) {
 					e.printStackTrace();
 				} 
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-				
-				///Receive Data
-				///Openview
 				
 				break;
 			
 			case "ADDJUGADOR":
-				System.out.println("FALTA");
-				
-				///Openview
-				(new AnadirJugador(socketDatos)).setVisible(true);;
-				///Send Data
+				(new AnadirJugador(socketDatos)).setVisible(true);
 				
 				break;
 			case "GETJUGADOR":
 				System.out.println("FALTA");
 				///Receive Data
 				///Openview
+				
+				try {
+					ios = new ObjectInputStream(socketDatos.getInputStream());
+					try {
+						
+						Jugador obj = (Jugador) ios.readObject();
+						
+						(new JugadorTableView(obj)).setVisible(true);
+						
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					} 
+				} catch (IOException e) {
+					e.printStackTrace();
+				} 
 				
 				
 				break;
@@ -184,8 +161,35 @@ public class HiloCliente extends Thread {
 				System.out.println("FALTA");
 				///Receive Data
 				///Openview
+				try {
+					ios = new ObjectInputStream(socketDatos.getInputStream());
+					try {
+						
+						ArrayList<Jugador> obj = (ArrayList<Jugador>) ios.readObject();
+						
+						(new JugadorTableView(obj)).setVisible(true);
+						
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					} 
+				} catch (IOException e) {
+					e.printStackTrace();
+				} 
 				
+				break;
 				
+			case "LISTJUGFROMCLUB":
+				try {
+					ios = new ObjectInputStream(socketDatos.getInputStream());
+					try {
+						ArrayList<Jugador> obj = (ArrayList<Jugador>) ios.readObject();
+						(new JugadorTableView(obj)).setVisible(true);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					} 
+				} catch (IOException e) {
+					e.printStackTrace();
+				} 
 				break;
 				
 			default:

@@ -1,15 +1,10 @@
 package edu.ucam.server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 import edu.ucam.domain.Club;
 import edu.ucam.domain.CodigosRespuesta;
@@ -36,7 +31,6 @@ public class HiloServidorCanalDatos extends Thread {
 	
 	public void run()
 	{
-		
 		try 
 		{
 			this.hiloComandos.EnviarMensaje(TipoRespuesta.PREOK,idPeticion, CodigosRespuesta.OK , "localhost "+puerto);
@@ -54,31 +48,29 @@ public class HiloServidorCanalDatos extends Thread {
 			
 			if(esperar) //Recibo datos
 			{
-				try {
+				try 
+				{
 					ObjectInputStream ios =  new ObjectInputStream(socket.getInputStream());
 					Object obj =  ios.readObject(); 
 					
 					if(obj instanceof Club )
 					{
 						Club c = (Club) obj;
-						if(!c.getId().equals("")) ///TODO: ver si es null o vacio
+						if(!c.getId().equals(""))///SI TIENE ID es porque es un update
 						{
-							///SI TIENE ID es porque es un update
 							Club clubServidor = this.hiloComandos.getServidor().getClubById(c.getId());
 							clubServidor.setNombre(c.getNombre());
 						}
 						else
 						{
-							///Hacer el insert
 							this.hiloComandos.getServidor().agregarClubServidor(c.getNombre());
 						}
-					}
+					} 
 					if(obj instanceof Jugador )
 					{
 						Jugador c = (Jugador) obj;
 						this.hiloComandos.getServidor().agregarJugadorServidor(c);
 					}
-					
 					
 				} catch (Exception e1) {
 					this.hiloComandos.EnviarMensaje(TipoRespuesta.FAILED, this.idPeticion, CodigosRespuesta.INTERNAL_SERVER_ERROR, "IOException");

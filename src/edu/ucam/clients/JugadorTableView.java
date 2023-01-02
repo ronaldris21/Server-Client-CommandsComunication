@@ -27,9 +27,25 @@ public class JugadorTableView extends javax.swing.JFrame {
         initComponents();
         
         lista = data;
-        DefaultTableModel model = new DefaultTableModel();
         this.mostrarDatos();
     }
+    
+    public JugadorTableView(Jugador jugador) {
+        initComponents();
+        
+        lista = new ArrayList<Jugador>();
+        lista.add(jugador);
+        this.mostrarDatos();
+    }
+    
+    public JugadorTableView() {
+        initComponents();
+        
+        lista = new ArrayList<Jugador>();
+        this.mostrarDatos();
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -137,7 +153,7 @@ public class JugadorTableView extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JugadorTableView(null).setVisible(true);
+                new JugadorTableView().setVisible(true);
             }
         });
     }

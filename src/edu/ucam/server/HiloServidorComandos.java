@@ -139,12 +139,8 @@ public class HiloServidorComandos extends Thread{
 								(new HiloServidorCanalDatos(this, palabras[0], null, true)).start();
 								
 								break;
-							case "GETJUGADOR": 
-								
+							case "GETJUGADOR": //<number> GETJUGADOR <id>
 								(new HiloServidorCanalDatos(this, palabras[0], null, true)).start();
-								
-								
-								
 								
 								break;
 							case "REMOVEJUGADOR": //<number> REMOVEJUGADOR <id>
