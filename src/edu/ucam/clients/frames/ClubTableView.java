@@ -1,4 +1,4 @@
-package edu.ucam.clients;
+package edu.ucam.clients.frames;
 
 
 
@@ -12,6 +12,7 @@ import edu.ucam.domain.Club;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.GroupLayout;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -36,12 +37,17 @@ public class ClubTableView extends javax.swing.JFrame {
     
     public ClubTableView(ArrayList<Club> clubes) {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        this.setAlwaysOnTop(true);
         
         if(clubes == null)
         	clubes = new ArrayList<Club>();
         lista = clubes;
         
         this.mostrarDatos();
+        this.setAlwaysOnTop(false);
     }
 
     /**
@@ -56,7 +62,6 @@ public class ClubTableView extends javax.swing.JFrame {
         jTableView = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jTableView.setModel(new DefaultTableModel(
         	new Object[][] {
         	},
@@ -102,7 +107,6 @@ public class ClubTableView extends javax.swing.JFrame {
 
     public void mostrarDatos(){
     	
-    	
     	 DefaultTableModel model = (DefaultTableModel) this.jTableView.getModel(); 
     	
     	 if(lista!=null)
@@ -116,8 +120,8 @@ public class ClubTableView extends javax.swing.JFrame {
     							o.getJugadores().size()
     					});
         }
-        jTableView.setModel(model );
-               
+        jTableView.setModel(model);
+        
     }
             
     
@@ -130,6 +134,7 @@ public class ClubTableView extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+    	
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

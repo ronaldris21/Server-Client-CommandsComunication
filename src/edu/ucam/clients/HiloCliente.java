@@ -4,8 +4,14 @@ package edu.ucam.clients;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+
+import edu.ucam.clients.frames.ClubTableView;
+import edu.ucam.clients.frames.JugadorTableView;
 import edu.ucam.domain.*;
 
 public class HiloCliente extends Thread {
@@ -30,10 +36,11 @@ public class HiloCliente extends Thread {
 					return;
 				}
 				
-				
+				///TODO: use method to print on TextField when using GUI  too
+
 				String lineaRespuesta = br.readLine();
 				if(lineaRespuesta!=null)
-					System.out.println(lineaRespuesta);
+					this.cliente.mostrarMensajeInterfazVisual(lineaRespuesta); ///Muestra mensaje por consola o en interfaz grafica si el programa tiene interfaz visual
 				
 				String[] palabras = lineaRespuesta.split(" ");	
 				if(palabras.length >= 5 && palabras[0].equals("PREOK") ) 
@@ -54,78 +61,45 @@ public class HiloCliente extends Thread {
 	///TODO: Hacer que esto vaya en un hilo
 	private void manejarPREOK(String comando,Socket socketDatos) {
 		
-		ObjectInputStream ios;
-		
+		String respuesta = "";
+		Club c = null;
+		Jugador j = null;
+		ArrayList<Jugador> listaJ = null;
 		
 		switch(comando.split(" ")[1])
 		{
-			
 			case "ADDCLUB":
-				System.out.println("FALTA");
-				///Open view 
-				///Send Data
+				do
+				{
+					respuesta = JOptionPane.showInputDialog("Ingresa el nuevo nombre del club");
+				}while(respuesta.equals(""));
+			    c =  new Club();
+			    c.setNombre(respuesta);
+			    
+			    (new ObjetosPorSocket<Club>()).enviarObjetoPorCanalDatos(socketDatos,	c);
 				
 			break;
-			case "UPDATECLUB":
-
-				System.out.println("FALTA");
-				///Open view
-				///Send Data to save
-				
-				
-				try {
-					ios =  new ObjectInputStream(socketDatos.getInputStream());
-					Club c = (Club) ios.readObject(); 
-					System.out.println(c.getNombre());
-					System.out.println(c.getId());
-					System.out.println(c.getJugadores().size());
-					
-					
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
-				
-				
+			case "UPDATECLUB": //<number> UPDATECLUB <id>
+				do
+				{
+					respuesta = JOptionPane.showInputDialog("Ingresa el nuevo nombre del club");
+				}while(respuesta.equals(""));
+				c =  new Club();
+				c.setNombre(respuesta);
+				c.setId(comando.split(" ")[2]);
+				 
+				(new ObjetosPorSocket<Club>()).enviarObjetoPorCanalDatos(socketDatos, c);
 				break;
 				
 			case "GETCLUB": 
-
-				try {
-					ios =  new ObjectInputStream(socketDatos.getInputStream());
-					Club c = (Club) ios.readObject(); 
-					(new ClubTableView(c)).setVisible(true);
-					
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
+				c = (new ObjetosPorSocket<Club>()).recibirObjeto(socketDatos);
 				
+				(new ClubTableView(c)).setVisible(true);
 				break;
 		
 			case "LISTCLUBES":
-				try {
-					ios = new ObjectInputStream(socketDatos.getInputStream());
-					try {
-						
-						ArrayList<Club> lista = (ArrayList<Club>) ios.readObject();
-						System.out.println(lista);
-						
-						
-						(new ClubTableView(lista)).setVisible(true);
-						
-					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
-					} 
-				} catch (IOException e) {
-					e.printStackTrace();
-				} 
+				ArrayList<Club> listaC = (new ObjetosPorSocket<ArrayList<Club>>()).recibirObjeto(socketDatos);
+				(new ClubTableView(listaC)).setVisible(true);
 				
 				break;
 			
@@ -134,73 +108,38 @@ public class HiloCliente extends Thread {
 				
 				break;
 			case "GETJUGADOR":
-				System.out.println("FALTA");
 				///Receive Data
+				j = (new ObjetosPorSocket<Jugador>()).recibirObjeto(socketDatos);
 				///Openview
-				
-				try {
-					ios = new ObjectInputStream(socketDatos.getInputStream());
-					try {
-						
-						Jugador obj = (Jugador) ios.readObject();
-						
-						(new JugadorTableView(obj)).setVisible(true);
-						
-					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
-					} 
-				} catch (IOException e) {
-					e.printStackTrace();
-				} 
-				
+				(new JugadorTableView(j)).setVisible(true);
 				
 				break;
 				
 			
 			case "LISTJUGADORES":
-				System.out.println("FALTA");
 				///Receive Data
+				listaJ = (new ObjetosPorSocket<ArrayList<Jugador>>()).recibirObjeto(socketDatos);
 				///Openview
-				try {
-					ios = new ObjectInputStream(socketDatos.getInputStream());
-					try {
-						
-						ArrayList<Jugador> obj = (ArrayList<Jugador>) ios.readObject();
-						
-						(new JugadorTableView(obj)).setVisible(true);
-						
-					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
-					} 
-				} catch (IOException e) {
-					e.printStackTrace();
-				} 
-				
+				(new JugadorTableView(listaJ)).setVisible(true);
 				break;
 				
 			case "LISTJUGFROMCLUB":
-				try {
-					ios = new ObjectInputStream(socketDatos.getInputStream());
-					try {
-						ArrayList<Jugador> obj = (ArrayList<Jugador>) ios.readObject();
-						(new JugadorTableView(obj)).setVisible(true);
-					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
-					} 
-				} catch (IOException e) {
-					e.printStackTrace();
-				} 
+				///Receive Data
+				listaJ = (new ObjetosPorSocket<ArrayList<Jugador>>()).recibirObjeto(socketDatos);
+				///Openview
+				(new JugadorTableView(listaJ)).setVisible(true);
 				break;
 				
 			default:
 				System.out.println("DEFAULT PREOK");
 				
 			break;
-			
 		}
 		
 	}
 
+	
+	
 
 
 }

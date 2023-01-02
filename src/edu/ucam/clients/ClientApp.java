@@ -1,54 +1,37 @@
 package edu.ucam.clients;
 
+import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
-import edu.ucam.domain.Club;
-import edu.ucam.domain.CodigosRespuesta;
-import edu.ucam.domain.Jugador;
-import edu.ucam.domain.TipoRespuesta;
-import edu.ucam.server.HiloServidorCanalDatos;
 
-public class Cliente {
+public class ClientApp extends Cliente{
 
+	private MainFrame vistaPrincipal;
+	HiloCliente hiloEscuchar;
 	
-	///TODO: EXIT_ON_CLOSE         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-	protected Boolean isActive = true;
-	protected Socket socket;
-	protected String comando;
+	public ClientApp() {
+		this.vistaPrincipal = null;
+		
+	}
 	
-	public String getComando()
+	///TODO: login con interfaz visual
+	public void mostrarMensajeInterfazVisual(String mensaje)
 	{
-		return this.comando;
-	}
-	
-	
-	public Socket getSocket() {
-		return socket;
-	}
-
-	public void setSocket(Socket socket) {
-		this.socket = socket;
-	}
-
-	public synchronized Boolean isActive()
-	{
-		return isActive;
-	}
-	
-	public synchronized void SetisActive(Boolean status)
-	{
-		isActive = status;
+		System.out.println(mensaje);
+		if(vistaPrincipal!=null)
+		{
+			
+			return;
+		}
+		///TODO: login view
+		
 	}
 	
 	public void ejecutar()
@@ -60,9 +43,23 @@ public class Cliente {
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			
 			///Pongo un hilo a escuchar!
-			HiloCliente hiloEscuchar =  new HiloCliente(this, br);
+			this.hiloEscuchar =  new HiloCliente(this, br);
 			hiloEscuchar.start();
 			
+			///TODO: LOGIN USANDO JOPTIONPANES!!!
+			this.
+			
+			///Ejecuto interfaz
+			vistaPrincipal = new MainFrame(pw);
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						vistaPrincipal.setVisible(true);
+					} catch(Exception t) {
+						t.printStackTrace();
+					}
+				}
+			});
 			
 			///Cliente se queda escribiendo
 			Scanner teclado =  new Scanner(System.in);
@@ -90,14 +87,11 @@ public class Cliente {
 		}
 	}
 	
-	public void mostrarMensajeInterfazVisual(String mensaje)
-	{
-		System.out.println(mensaje);
-	}
-
 
 	public static void main(String[] args) {
-		(new Cliente()).ejecutar();
+		(new ClientApp()).ejecutar();
+
 	}
+
 
 }

@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import edu.ucam.domain.Jugador;
+import edu.ucam.domain.ObjetosPorSocket;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -105,6 +106,7 @@ public class AnadirJugador extends JFrame {
 				String nombre= txtnombre.getText();
 				String apellidos= txtapellidos.getText();
 				int goles = spgoles.getComponentCount();
+				///Valida nombres y apellidos
 				if(txtnombre.getText().equals("")){
 					System.out.println("Escribe el nombre");
 					JOptionPane.showMessageDialog(getVista(), "Esribe el nombre");
@@ -116,24 +118,10 @@ public class AnadirJugador extends JFrame {
 					return;
 				}
 				
-				/// validar appelido
-				
-				
 				/// Crear el objeto del jugador
 				Jugador j= new Jugador("",nombre, apellidos,goles);
-				ObjectOutputStream oos;
-				try {
-					oos = new ObjectOutputStream(s.getOutputStream());
-					oos.writeObject(j);
-					oos.flush(); 
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} 
-				
-				//Enviar datos al servidor
-				//Cerrar la vista, sin que se cierre la aplicacion
-				///Cerrar frame codigo
+				(new ObjetosPorSocket<Jugador>()).enviarObjetoPorCanalDatos(s, j);
+			
 				dispose();
 				
 			}
