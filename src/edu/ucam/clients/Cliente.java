@@ -64,7 +64,7 @@ public class Cliente {
 			///Pongo un hilo a escuchar!
 			HiloCliente hiloEscuchar =  new HiloCliente(this, br);
 			hiloEscuchar.start();
-			
+			(new VistaPrincipalCliente(socket)).setVisible(true);
 			
 			///Cliente se queda escribiendo
 			Scanner teclado =  new Scanner(System.in);

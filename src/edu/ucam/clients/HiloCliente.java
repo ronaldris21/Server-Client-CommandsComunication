@@ -117,7 +117,7 @@ public class HiloCliente extends Thread {
 						ArrayList<Club> lista = (ArrayList<Club>) ios.readObject();
 						System.out.println(lista);
 						
-						
+						//TODO: Hay que hacer que se muestre la vista
 						(new ClubTableView(lista)).setVisible(true);
 						
 					} catch (ClassNotFoundException e) {
