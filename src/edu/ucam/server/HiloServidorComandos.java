@@ -42,6 +42,7 @@ public class HiloServidorComandos extends Thread{
 			while(true)
 			{
 				try {
+					/*
 					System.out.println("CLUBES");
 					for (Club c1 :  this.servidor.getClubes()) {
 						System.out.println(c1.getId()+ " "+ c1.getNombre());
@@ -56,6 +57,7 @@ public class HiloServidorComandos extends Thread{
 					for (Jugador j1 : this.servidor.getJugadores()) {
 						System.out.println(j1.getId()+ " "+ j1.getNombre());
 					}
+					**/
 					
 					
 					String comando = br.readLine();

@@ -10,6 +10,10 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
+import edu.ucam.domain.CodigosRespuesta;
+
 
 public class ClientApp extends Cliente{
 
@@ -42,12 +46,52 @@ public class ClientApp extends Cliente{
 			PrintWriter pw =  new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			
+			
+			System.out.println(br.readLine()); //Mensaje de bienvenida
+			
+			
+			///TODO: LOGIN USANDO JOPTIONPANES!!!
+			String respuesta = "";
+			do
+			{
+				String username = JOptionPane.showInputDialog("Ingresa el USERNAME de tu usuario: (EXIT si deseas salir): ");
+				if(username==null || username.toLowerCase().equals("exit"))
+				{
+					pw.println("00 EXIT");
+					pw.flush();
+					return;
+				}
+				pw.println("LOGINApp USER "+username);
+				pw.flush();
+				
+				respuesta = br.readLine();
+				System.out.println(respuesta);
+				
+			}while(!respuesta.split(" ")[0].equals("OK"));
+			
+			respuesta = "";
+			do
+			{
+				String password = JOptionPane.showInputDialog("Ingresa el PASSWORD de tu usuario: (EXIT si deseas salir): ");
+				if(password==null || password.toLowerCase().equals("exit"))
+				{
+					pw.println("00 EXIT");
+					pw.flush();
+					return;
+				}
+				pw.println("LOGINApp PASS "+password);
+				pw.flush();
+				
+				respuesta = br.readLine();
+				System.out.println(respuesta);
+			}while(!respuesta.split(" ")[0].equals("OK"));
+			
+			
+			
 			///Pongo un hilo a escuchar!
 			this.hiloEscuchar =  new HiloCliente(this, br);
 			hiloEscuchar.start();
 			
-			///TODO: LOGIN USANDO JOPTIONPANES!!!
-			this.
 			
 			///Ejecuto interfaz
 			vistaPrincipal = new MainFrame(pw);
