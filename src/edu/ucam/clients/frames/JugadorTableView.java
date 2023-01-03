@@ -17,12 +17,17 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 
-
+/**
+ * 
+ * Esta es la clase en la que se crea una tabla 
+ * con los clubes que hay registrados.
+ *
+ */
 public class JugadorTableView extends javax.swing.JFrame {
 
 
     ArrayList<Jugador> lista = new ArrayList<>();
-    
+   
     public JugadorTableView(ArrayList<Jugador> data) {
         initComponents();
         
@@ -54,6 +59,9 @@ public class JugadorTableView extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    /**
+     * Inicializa los componentes de la tabla
+     */
     private void initComponents() {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableView = new javax.swing.JTable();
@@ -107,6 +115,9 @@ public class JugadorTableView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Muestra los datos en la lista
+     */
     public void mostrarDatos(){
     	
     	

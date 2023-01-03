@@ -34,8 +34,10 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 public class MainFrame extends JFrame {
 
 	/**
-	 * 
-	 */
+	 * <p>
+	*Esta es la vista principal de la aplicacion.  
+	*</p>
+	*/
 	private static final long serialVersionUID = -4437042091596383165L;
 
 	//Atributes
@@ -47,6 +49,13 @@ public class MainFrame extends JFrame {
 	private int counterCommand; 
 
 	//Constructor
+	/**
+	 * 
+	 * @param pw
+	 * En ella se podran elegir los comandos visualmente o
+	*escribirlos por teclado. Ademas se escribiran por pantalla todos los comandos usados y tambien se pueden ver las
+	*las respuestas del servidor.
+	 */
 	public MainFrame(PrintWriter pw) {
         counterCommand = 0;
         this.pw = pw;

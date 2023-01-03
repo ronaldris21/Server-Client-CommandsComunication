@@ -13,8 +13,11 @@ import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 import edu.ucam.domain.CodigosRespuesta;
-
-
+/**
+ * <p>
+*Esta es la clase que inicia la aplicacion visual, hereda de la clase cliente.
+*</p>
+*/
 public class ClientApp extends Cliente{
 
 	private MainFrame vistaPrincipal;
@@ -25,7 +28,10 @@ public class ClientApp extends Cliente{
 		
 	}
 	
-	///TODO: login con interfaz visual
+	
+	/**
+	 *  Muestra un mensaje en la interfaz visual o en la consola segun se este ejecutando.
+	 */
 	public void mostrarMensajeInterfazVisual(String mensaje)
 	{
 		System.out.println(mensaje);
@@ -37,8 +43,11 @@ public class ClientApp extends Cliente{
 		///TODO: login view
 		
 	}
-	
+	/**
+	 *  Ejecuta la aplicacion del cliente. Se conecta el socket al servidor, se hace el proceso del login y se lanza la interfaz visual.
+	 */
 	public void ejecutar()
+	
 	{
 		try {
 			this.socket =  new Socket("localhost",5000);
@@ -131,7 +140,11 @@ public class ClientApp extends Cliente{
 		}
 	}
 	
-
+	/**
+	 * 
+	 * @param args
+	 * Ejecuta la aplicacion en modo visual
+	 */
 	public static void main(String[] args) {
 		(new ClientApp()).ejecutar();
 

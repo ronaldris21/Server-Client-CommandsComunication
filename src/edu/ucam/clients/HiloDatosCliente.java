@@ -5,12 +5,17 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import edu.ucam.clients.frames.AnadirJugador;
 import edu.ucam.clients.frames.ClubTableView;
 import edu.ucam.clients.frames.JugadorTableView;
 import edu.ucam.domain.Club;
 import edu.ucam.domain.Jugador;
 import edu.ucam.domain.ObjetosPorSocket;
-
+/**
+ * <p>
+*Esta es la clase que abreclas aplicaciones visuales
+*</p>
+*/
 public class HiloDatosCliente extends Thread{
 
 	private String comando;
@@ -19,7 +24,11 @@ public class HiloDatosCliente extends Thread{
 		this.comando = comando;
 		this.socketDatos = socketDatos;
 	}
-	
+	/**
+	 * Abre la aplicacion visual para anadir club, actualizar el club
+	 *  obtener los clubes, listar clubes, anadir jugador,
+	 *  obtener jugadores, listar jugadores y listar jugadores de un club.
+	 */
 	public void run()
 	{
 		String respuesta = "";

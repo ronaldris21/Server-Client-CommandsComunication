@@ -15,6 +15,11 @@ import edu.ucam.clients.frames.ClubTableView;
 import edu.ucam.clients.frames.JugadorTableView;
 import edu.ucam.domain.*;
 
+/**
+ * <p>
+*Es el hilo que esta escuchando eternamente las respuestas del servidor
+*</p>
+*/
 public class HiloCliente extends Thread {
 
 	private BufferedReader br;
@@ -24,7 +29,9 @@ public class HiloCliente extends Thread {
 		this.cliente = cliente;
 		this.br =  br;
 	}
-
+	/**
+	 *  Escucha los comandos que le manden.
+	 */
 	public void run()
 	{
 		while(true)

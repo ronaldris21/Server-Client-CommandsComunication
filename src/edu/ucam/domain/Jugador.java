@@ -61,14 +61,14 @@ public class Jugador implements Serializable
     }
     
     /**
-     * Método que añade un gol al jugador
+     * Metodo que anade un gol al jugador
      */
     public void addGol() {
         ++this.goles;
     }
     
     /**
-     * Método que quita un gol al jugador
+     * Metodo que quita un gol al jugador
      */
     public void removeGol() {
         if (this.goles > 0) {

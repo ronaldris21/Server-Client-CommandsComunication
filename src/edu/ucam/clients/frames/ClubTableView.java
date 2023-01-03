@@ -17,14 +17,23 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-
+/**
+ * <p>
+*Esta es la clase en la que se crea una tabla 
+*con los clubes que hay registrados.
+*</p>
+*/
 
 public class ClubTableView extends javax.swing.JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
 	ArrayList<Club> lista = new ArrayList<>();
-    
+    /**
+     * 
+     * @param club
+     * Inicia los componentes
+     */
     public ClubTableView(Club club)
     {
     	initComponents();
@@ -35,7 +44,11 @@ public class ClubTableView extends javax.swing.JFrame {
         this.mostrarDatos();
     }
     
-    
+    /**
+     * 
+     * @param clubes
+     * Muestra los datos en la tabla
+     */
     public ClubTableView(ArrayList<Club> clubes) {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -57,6 +70,9 @@ public class ClubTableView extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    /**
+     * Inicializa los componentes
+     */
     private void initComponents() {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableView = new javax.swing.JTable();
@@ -105,6 +121,9 @@ public class ClubTableView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Muestra los datos de los clubes
+     */
     public void mostrarDatos(){
     	
     	 DefaultTableModel model = (DefaultTableModel) this.jTableView.getModel(); 
