@@ -7,7 +7,7 @@ package edu.ucam.domain;
 import java.io.Serializable;
 /**
  * <p> 
- * 
+ * Esta es la clase en la que se crea el jugador
  * </p>
  */
 public class Jugador implements Serializable
@@ -60,10 +60,16 @@ public class Jugador implements Serializable
         this.goles = goles;
     }
     
+    /**
+     * Método que añade un gol al jugador
+     */
     public void addGol() {
         ++this.goles;
     }
     
+    /**
+     * Método que quita un gol al jugador
+     */
     public void removeGol() {
         if (this.goles > 0) {
             --this.goles;
