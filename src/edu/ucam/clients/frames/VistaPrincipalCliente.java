@@ -1,4 +1,4 @@
-package edu.ucam.clients;
+package edu.ucam.clients.frames;
 
 import java.awt.EventQueue;
 
@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.BoxLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -40,6 +41,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.DropMode;
 
 public class VistaPrincipalCliente extends JFrame {
 
@@ -53,58 +55,75 @@ public class VistaPrincipalCliente extends JFrame {
 	 * Launch the application.
 	 */
 	
-	public void ejecutar()
-	{
-		try {
-			this.s =  new Socket("localhost",5000);
-			
-			PrintWriter pw =  new PrintWriter(new OutputStreamWriter(s.getOutputStream()));
-			
-					
-				} catch (Exception e) {} //En caso que el servidor cierre el socket!
-			}
-	
 	public static void main(String[] args) {
+		
+		
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					VistaPrincipalCliente frame = new VistaPrincipalCliente(null );
+					Socket ss =  new Socket("localhost",5000);
+					VistaPrincipalCliente frame = new VistaPrincipalCliente(ss );
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+	
+	      
 	}
 
 	/**
 	 * Create the frame.
 	 */
 	public VistaPrincipalCliente(Socket s) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//1
+	      this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	      
+	      //JTextPane textPane = new JTextPane();
+		
+	     ////clase  
+	    
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		 JFrame frame = new JFrame("Demo");
-	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	      Container container = frame.getContentPane();
-		
+
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		JTextPane tpEnter = new JTextPane();
 		tpEnter.setText("");
-		tpEnter.setBounds(30, 124, 221, 126);
-		contentPane.add(tpEnter);
+		tpEnter.setBounds(30, 124, 283, 161); 
+		
 	    SimpleAttributeSet attributeSet = new SimpleAttributeSet();  
         StyleConstants.setBold(attributeSet, true); 
-        JScrollPane scrollPane = new JScrollPane(tpEnter);
-        scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        container.add(scrollPane, BorderLayout.CENTER);
-        contentPane.setSize(500, 300);
-        contentPane.setVisible(true);
+       // JScrollPane scrollPane = new JScrollPane(t);
+       // scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+       // container.add(scrollPane, BorderLayout.CENTER);
+       // frame.setSize(500, 300);
+       // frame.setVisible(true);
        // JScrollPane sp= new JScrollPane(tpEnter, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         // contentPane.add(sp);
+        
+        
+
+		//JScrollPane scrollPane = new JScrollPane(tpEnter);
+	    //scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+	    //contentPane.add(scrollPane, BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(tpEnter);
+        scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setBounds(30, 124, 283, 161); 
+        contentPane.add(scrollPane, BorderLayout.CENTER);
+        
+        
+        this.setSize(493, 356);
+        this.setVisible(true);
+	    
+        //contentPane.add(tpEnter);
+	
+	    /*JScrollPane scrollPane = new JScrollPane(tpEnter);
+		scrollPane.setBounds(43, 29, 2, 2);
+		contentPane.add(scrollPane);*/
 		
 		JButton btAceptar = new JButton("Aceptar");
 		btAceptar.addActionListener(new ActionListener() {
@@ -112,7 +131,7 @@ public class VistaPrincipalCliente extends JFrame {
 				PrintWriter pw = null;
 				try {
 					pw = new PrintWriter(new OutputStreamWriter(s.getOutputStream()));
-					comando = txtAceptar.getText();
+					comando = txtAceptar.getText().trim();
 					pw.println(comando);
 					pw.flush();
 					  
@@ -128,7 +147,13 @@ public class VistaPrincipalCliente extends JFrame {
 						} catch (BadLocationException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
-						}  
+						} 
+
+
+						  JScrollBar vertical = scrollPane.getVerticalScrollBar();
+						  vertical.setValue( vertical.getMaximum() );
+						  
+						  
 					
 				} catch (IOException e2) {
 					// TODO Auto-generated catch block
@@ -144,7 +169,6 @@ public class VistaPrincipalCliente extends JFrame {
 			}
 		});
 		
-	
 		btAceptar.setBounds(294, 81, 89, 23);
 		contentPane.add(btAceptar);
 		
@@ -187,8 +211,10 @@ public class VistaPrincipalCliente extends JFrame {
 				}
 			}
 		});
-		btEnter.setBounds(294, 177, 89, 23);
+		btEnter.setBounds(342, 177, 89, 23);
 		contentPane.add(btEnter);
+		
+		
 		
 		
 	}

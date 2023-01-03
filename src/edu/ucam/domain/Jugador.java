@@ -1,11 +1,15 @@
 // 
 // Decompiled by Procyon v0.5.36
-// 
+// s
 
 package edu.ucam.domain;
 
 import java.io.Serializable;
-
+/**
+ * <p> 
+ * 
+ * </p>
+ */
 public class Jugador implements Serializable
 {
     private static final long serialVersionUID = 1L;

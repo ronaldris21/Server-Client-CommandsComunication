@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import edu.ucam.clients.frames.VistaPrincipalCliente;
 import edu.ucam.domain.Club;
 import edu.ucam.domain.CodigosRespuesta;
 import edu.ucam.domain.Jugador;
