@@ -57,6 +57,8 @@ public class VistaPrincipalCliente extends JFrame {
 	
 	public static void main(String[] args) {
 		
+		
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -129,7 +131,7 @@ public class VistaPrincipalCliente extends JFrame {
 				PrintWriter pw = null;
 				try {
 					pw = new PrintWriter(new OutputStreamWriter(s.getOutputStream()));
-					comando = txtAceptar.getText();
+					comando = txtAceptar.getText().trim();
 					pw.println(comando);
 					pw.flush();
 					  
