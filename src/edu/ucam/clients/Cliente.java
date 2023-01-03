@@ -27,7 +27,9 @@ public class Cliente {
 	protected Socket socket;
 	protected String comando;
 	
-	public String getComando()
+	///ARRAYLIST DE LOS COMANDOS ENVIADOS!!! ASÍ OBTENGO EL COMANDO ENVIADO EN BASE A LOS ALMACENADOS Y MANDO ESE COMO PARAMETRO
+	
+	public synchronized String getComando()
 	{
 		return this.comando;
 	}
@@ -62,7 +64,7 @@ public class Cliente {
 			///Pongo un hilo a escuchar!
 			HiloCliente hiloEscuchar =  new HiloCliente(this, br);
 			hiloEscuchar.start();
-			(new VistaPrincipalCliente(socket)).setVisible(true);
+			//(new VistaPrincipalCliente(socket)).setVisible(true);
 			
 			///Cliente se queda escribiendo
 			Scanner teclado =  new Scanner(System.in);
@@ -75,6 +77,7 @@ public class Cliente {
 					comando =  teclado.nextLine();
 					pw.println(comando);
 					pw.flush();	
+					Thread.sleep(500);
 					
 					String[] palabras = comando.split(" ");
 					if(palabras.length>2 && palabras[1].equals("EXIT"))

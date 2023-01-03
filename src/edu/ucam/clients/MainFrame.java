@@ -46,7 +46,6 @@ public class MainFrame extends JFrame {
 	private JEditorPane editorPaneLog;
 	private int counterCommand; 
 
-	private Integer dataPort;
 	//Constructor
 	public MainFrame(PrintWriter pw) {
         counterCommand = 0;
@@ -176,13 +175,13 @@ public class MainFrame extends JFrame {
 				pw.flush();
 			}
 		});
+		
 		mnMedicos.add(mntmClubEliminar);
 		
 		JMenuItem mntmClubListar = new JMenuItem("Listar");
 		mntmClubListar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				//number> LISTCLUBES
-				String idClub = JOptionPane.showInputDialog("Introduce el id del club a ACTUALIZAR: ");
 				pw.println(++counterCommand + " LISTCLUBES");
 				pw.flush();
 			}

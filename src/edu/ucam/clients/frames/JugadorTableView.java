@@ -58,7 +58,7 @@ public class JugadorTableView extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableView = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
 
         jTableView.setModel(new DefaultTableModel(
         	new Object[][] {

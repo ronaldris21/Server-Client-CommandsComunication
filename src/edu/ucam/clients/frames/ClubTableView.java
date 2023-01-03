@@ -21,8 +21,9 @@ import javax.swing.SwingConstants;
 
 public class ClubTableView extends javax.swing.JFrame {
 
-
-    ArrayList<Club> lista = new ArrayList<>();
+	private static final long serialVersionUID = 1L;
+	
+	ArrayList<Club> lista = new ArrayList<>();
     
     public ClubTableView(Club club)
     {
@@ -39,7 +40,6 @@ public class ClubTableView extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setAlwaysOnTop(true);
         
         if(clubes == null)
@@ -61,7 +61,7 @@ public class ClubTableView extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableView = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         jTableView.setModel(new DefaultTableModel(
         	new Object[][] {
         	},
