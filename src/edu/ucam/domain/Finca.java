@@ -12,6 +12,11 @@ public class Finca {
 		this.nombreFinca = nombreFinca;
 	}
 
+	public Finca( String nombreFinca, String duenoFinca) {
+		
+		this.duenoFinca =  duenoFinca;
+		this.nombreFinca = nombreFinca;
+	}
 	public int getId() {
 		return id;
 	}

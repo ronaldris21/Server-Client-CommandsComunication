@@ -14,6 +14,13 @@ public class Cultivo {
 		this.presupuesto =  presupuesto;
 		
 	}
+	public Cultivo( int idFinca, String nombreCultivo, float presupuesto) {
+	
+		this.idFinca = idFinca;
+		this.nombreCultivo = nombreCultivo;
+		this.presupuesto =  presupuesto;
+		
+	}
 
 	public int getId() {
 		return id;
