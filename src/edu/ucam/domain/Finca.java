@@ -6,6 +6,10 @@ public class Finca {
 	private String nombreFinca;
 	private String duenoFinca;
 	
+	public Finca()
+	{
+		
+	}
 	public Finca(int id, String nombreFinca, String duenoFinca) {
 		this.id =  id;
 		this.duenoFinca =  duenoFinca;

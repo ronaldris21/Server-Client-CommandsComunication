@@ -6,6 +6,10 @@ public class Cultivo {
 	private int idFinca;
 	private String nombreCultivo;
 	private float presupuesto;
+	
+	public Cultivo() {
+		
+	}
 
 	public Cultivo(int id, int idFinca, String nombreCultivo, float presupuesto) {
 		this.id = id;
