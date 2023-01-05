@@ -22,7 +22,7 @@ public class ClienteRMI {
 		String op = "";
 		Scanner teclado = new Scanner(System.in);
 		String respuesta;
-		int id;
+		int idFinca, idCultivo;
 		float presupuesto;
 		boolean esCorrecto=false;
 		
@@ -86,7 +86,7 @@ public class ClienteRMI {
 				{
 					try {
 						System.out.println("Ingrese el id de la finca:");
-						id = Integer.parseInt(teclado.nextLine());
+						idFinca = Integer.parseInt(teclado.nextLine());
 						esCorrecto=true;
 					} catch (Exception e) {
 					}
@@ -106,7 +106,7 @@ public class ClienteRMI {
 					respuesta = teclado.nextLine();
 				}while(respuesta!=null);
 				f.setDuenoFinca(respuesta);
-				System.out.println(service.updateFinca(id, f));
+				System.out.println(service.updateFinca(idFinca, f));
 				break;
 			case "4":
 				System.out.println("Ingrese la matricula del coche:");
