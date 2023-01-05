@@ -62,7 +62,7 @@ public class ClienteRMI {
 				{
 					System.out.println("Ingrese el nombre de la finca: ");
 					respuesta = teclado.nextLine();
-				}while(respuesta!=null);
+				}while(respuesta==null);
 				f.setNombreFinca(respuesta);
 				
 				
@@ -70,7 +70,7 @@ public class ClienteRMI {
 				{
 					System.out.println("Ingrese el dueno de la finca: ");
 					respuesta = teclado.nextLine();
-				}while(respuesta!=null);
+				}while(respuesta==null);
 				f.setDuenoFinca(respuesta);
 				
 				
@@ -115,7 +115,7 @@ public class ClienteRMI {
 				{
 					System.out.println("Ingrese el dueno de la finca: ");
 					respuesta = teclado.nextLine();
-				}while(respuesta!=null);
+				}while(respuesta==null);
 				f.setDuenoFinca(respuesta);
 				System.out.println(service.updateFinca(idFinca, f));
 				break;
@@ -185,7 +185,7 @@ public class ClienteRMI {
 				{
 					System.out.println("Ingrese el nombre del cultivo: ");
 					respuesta = teclado.nextLine();
-				}while(respuesta!=null);
+				}while(respuesta==null);
 				c.setNombreCultivo(respuesta);
 				
 				
@@ -248,7 +248,7 @@ public class ClienteRMI {
 				{
 					System.out.println("Ingrese el nuevo nombre del cultivo: ");
 					respuesta = teclado.nextLine();
-				}while(respuesta!=null);
+				}while(respuesta==null);
 				c.setNombreCultivo(respuesta);
 				
 				
