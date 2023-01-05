@@ -201,7 +201,7 @@ public class HiloServidorComandos extends Thread{
 									Club c = this.servidor.getClubById(palabras[3]);
 									if(c!= null)
 										for (int ii=0; ii<c.getJugadores().size();ii++) 
-											if(palabras[3].equals( c.getJugadores().get(ii).getId()))
+											if(palabras[2].equals( c.getJugadores().get(ii).getId()))
 											{
 												c.getJugadores().remove(ii);
 												EnviarMensaje(TipoRespuesta.OK, palabras[0],CodigosRespuesta.OK, "Jugador eliminado del equipo");

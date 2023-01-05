@@ -28,11 +28,15 @@ public class ClubTableView extends javax.swing.JFrame {
     public ClubTableView(Club club)
     {
     	initComponents();
+    	this.setLocationRelativeTo(null);
+        this.setVisible(true);
+        this.setAlwaysOnTop(true);
         
         lista = new ArrayList<Club>();
         this.lista.add(club);
 
         this.mostrarDatos();
+        this.setAlwaysOnTop(false);
     }
     
     
@@ -108,7 +112,11 @@ public class ClubTableView extends javax.swing.JFrame {
     public void mostrarDatos(){
     	
     	 DefaultTableModel model = (DefaultTableModel) this.jTableView.getModel(); 
-    	
+    	if (model.getRowCount() > 0) {
+    	    for (int i = model.getRowCount() - 1; i > -1; i--) {
+    	    	model.removeRow(i);
+    	    }
+    	}
     	 if(lista!=null)
         for (Club o : lista) {
         	

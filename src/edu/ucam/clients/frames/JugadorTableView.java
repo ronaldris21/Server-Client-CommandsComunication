@@ -25,24 +25,37 @@ public class JugadorTableView extends javax.swing.JFrame {
     
     public JugadorTableView(ArrayList<Jugador> data) {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+        this.setAlwaysOnTop(true);
         
         lista = data;
         this.mostrarDatos();
+        this.setAlwaysOnTop(false);
     }
     
     public JugadorTableView(Jugador jugador) {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+        this.setAlwaysOnTop(true);
         
         lista = new ArrayList<Jugador>();
         lista.add(jugador);
         this.mostrarDatos();
+        this.setAlwaysOnTop(false);
     }
     
     public JugadorTableView() {
         initComponents();
         
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+        this.setAlwaysOnTop(true);
+        
         lista = new ArrayList<Jugador>();
         this.mostrarDatos();
+        this.setAlwaysOnTop(false);
     }
     
     
@@ -111,7 +124,11 @@ public class JugadorTableView extends javax.swing.JFrame {
     	
     	
     	 DefaultTableModel model = (DefaultTableModel) this.jTableView.getModel(); 
-    	
+    	 if (model.getRowCount() > 0) {
+     	    for (int i = model.getRowCount() - 1; i > -1; i--) {
+     	    	model.removeRow(i);
+     	    }
+    	 }
     	 if(lista!=null)
         for (Jugador o : lista) {
         	

@@ -2,8 +2,12 @@ package edu.ucam.clients;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.border.EmptyBorder;
-
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
@@ -20,6 +24,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextPane;
 import javax.swing.JDesktopPane;
 import java.awt.Color;
 import java.beans.PropertyVetoException;
@@ -36,29 +41,38 @@ public class MainFrame extends JFrame {
 	/**
 	 * 
 	 */
+	
+	public MainFrame getVista()
+	{
+		return this;
+	}
+	
 	private static final long serialVersionUID = -4437042091596383165L;
 
 	//Atributes
 	private JPanel contentPane;
 	private PrintWriter pw;
+	JTextPane txtConsolaTextPane;
+	JScrollPane scrollPane_1;
 	
-	private JEditorPane editorPaneData;
-	private JEditorPane editorPaneLog;
-	private int counterCommand; 
+	private int counterCommand;
+
+	private ClientApp cliente; 
 
 	//Constructor
-	public MainFrame(PrintWriter pw) {
+	public MainFrame(PrintWriter pw, ClientApp cliente) {
         counterCommand = 0;
         this.pw = pw;
+        this.cliente = cliente;
         
         
 		 addWindowListener(new java.awt.event.WindowAdapter() {
 	            @Override
 	            public void windowClosing(java.awt.event.WindowEvent evt) {
 	            	try {
-	        			pw.println("EXIT");
-	        			pw.flush();
+	            		enviarComandoServidor("ClienteApp EXIT");
 	        			//clientThreadCommands.setSuspended(true); //TODO: CHECK
+	            		getVista().dispose();
 	        		}
 	        		catch(Exception t) {
 	        		}
@@ -113,8 +127,7 @@ public class MainFrame extends JFrame {
 		mntmSistemaSesiones.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//<number> SESIONES
-				pw.println(++counterCommand+" SESIONES");
-				pw.flush();
+				enviarComandoServidor(++counterCommand+" SESIONES");
 			}
 		});
 		mnPacientes.add(mntmSistemaSesiones);
@@ -124,8 +137,7 @@ public class MainFrame extends JFrame {
 		mntmSistemaExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				//<number> EXIT
-				pw.println(++counterCommand + " EXIT");
-				pw.flush();
+				enviarComandoServidor(++counterCommand + " EXIT");
 			}
 		});
 		mnPacientes.add(mntmSistemaExit);
@@ -137,8 +149,7 @@ public class MainFrame extends JFrame {
 		mntmClubAnadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//<number> ADDCLUB
-				pw.println(++counterCommand + " ADDCLUB");
-				pw.flush();
+				enviarComandoServidor(++counterCommand + " ADDCLUB");
 			}
 		});
 		mnMedicos.add(mntmClubAnadir);
@@ -148,8 +159,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {				
 				//<number> UPDATECLUB <id>
 				String idClub = JOptionPane.showInputDialog("Introduce el id del club a ACTUALIZAR: ");
-				pw.println(++counterCommand + " UPDATECLUB "+idClub);
-				pw.flush();
+				enviarComandoServidor(++counterCommand + " UPDATECLUB "+idClub);
 			}
 		});
 		mnMedicos.add(mntmClubActualizar);
@@ -159,8 +169,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				//<number> GETCLUB <id>
 				String idClub = JOptionPane.showInputDialog("Introduce el id del club a MOSTRAR: ");
-				pw.println(++counterCommand + " GETCLUB "+idClub);
-				pw.flush();
+				enviarComandoServidor(++counterCommand + " GETCLUB "+idClub);
 				
 			}
 		});
@@ -171,8 +180,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				//<number> REMOVECLUB <id>
 				String idClub = JOptionPane.showInputDialog("Introduce el id del club a ELIMINAR: ");
-				pw.println(++counterCommand + " REMOVECLUB "+idClub);
-				pw.flush();
+				enviarComandoServidor(++counterCommand + " REMOVECLUB "+idClub);
 			}
 		});
 		
@@ -182,8 +190,7 @@ public class MainFrame extends JFrame {
 		mntmClubListar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				//number> LISTCLUBES
-				pw.println(++counterCommand + " LISTCLUBES");
-				pw.flush();
+				enviarComandoServidor(++counterCommand + " LISTCLUBES");
 			}
 		});
 		mnMedicos.add(mntmClubListar);
@@ -192,8 +199,7 @@ public class MainFrame extends JFrame {
 		mntmClubContar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				//<number> COUNTCLUBES
-				pw.println(++counterCommand + " COUNTCLUBES");
-				pw.flush();
+				enviarComandoServidor(++counterCommand + " COUNTCLUBES");
 			}
 		});
 		mnMedicos.add(mntmClubContar);
@@ -204,11 +210,8 @@ public class MainFrame extends JFrame {
 		JMenuItem mntmJugadorAnadir = new JMenuItem("A\u00F1adir");
 		mntmJugadorAnadir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
 				//<number> ADDJUGADOR
-				pw.println(++counterCommand + " ADDJUGADOR");
-				pw.flush();
-				
+				enviarComandoServidor(++counterCommand + " ADDJUGADOR");
 			}
 		});
 		mnTratamientos.add(mntmJugadorAnadir);
@@ -220,8 +223,7 @@ public class MainFrame extends JFrame {
 				
 				String idJugador = JOptionPane.showInputDialog("Introduce el id del jugador: ");
 				String idClub = JOptionPane.showInputDialog("Introduce el id del club: ");
-				pw.println(++counterCommand + " ADDJUGADOR2CLUB "+idJugador+" "+idClub);
-				pw.flush();
+				enviarComandoServidor(++counterCommand + " ADDJUGADOR2CLUB "+idJugador+" "+idClub);
 			}
 		});
 		
@@ -230,8 +232,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {				
 				//<number> GETJUGADOR <id>
 				String id = JOptionPane.showInputDialog("Introduce el id del jugador a MOSTRAR: ");
-				pw.println(++counterCommand + " GETJUGADOR "+id);
-				pw.flush();
+				enviarComandoServidor(++counterCommand + " GETJUGADOR "+id);
 			}
 		});
 		mnTratamientos.add(mntmJugadorMostrar);
@@ -241,8 +242,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				//<number> REMOVEJUGADOR <id>
 				String id = JOptionPane.showInputDialog("Introduce el id del jugador a ELIMINAR: ");
-				pw.println(++counterCommand + " REMOVEJUGADOR "+id);
-				pw.flush();
+				enviarComandoServidor(++counterCommand + " REMOVEJUGADOR "+id);
 			}
 		});
 		mnTratamientos.add(mntmJugadorEliminar);
@@ -251,8 +251,7 @@ public class MainFrame extends JFrame {
 		mntmJugadorListar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				//<number> LISTJUGADORES
-				pw.println(++counterCommand + " LISTJUGADORES");
-				pw.flush();
+				enviarComandoServidor(++counterCommand + " LISTJUGADORES");
 			}
 		});
 		mnTratamientos.add(mntmJugadorListar);
@@ -264,8 +263,7 @@ public class MainFrame extends JFrame {
 				//<number> REMOVEJUGFROMCLUB <idjugador> <idclub>
 				String idJugador = JOptionPane.showInputDialog("Introduce el id del jugador: ");
 				String idClub = JOptionPane.showInputDialog("Introduce el id del club: ");
-				pw.println(++counterCommand + " REMOVEJUGFROMCLUB "+idJugador+" "+idClub);
-				pw.flush();
+				enviarComandoServidor(++counterCommand + " REMOVEJUGFROMCLUB "+idJugador+" "+idClub);
 			}
 		});
 		mnTratamientos.add(mntmJugadorEliminarJugadorClub);
@@ -275,8 +273,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//<number> LISTJUGFROMCLUB <idjugador>
 				String idClub = JOptionPane.showInputDialog("Introduce el id del club: ");
-				pw.println(++counterCommand + " LISTJUGFROMCLUB "+idClub);
-				pw.flush();
+				enviarComandoServidor(++counterCommand + " LISTJUGFROMCLUB "+idClub);
 			}
 		});
 		mnTratamientos.add(mntmJugadorListarJugadoresClub);
@@ -299,8 +296,7 @@ public class MainFrame extends JFrame {
 		JPanel panelData = new JPanel();
 		tabbedPane.addTab("Data", null, panelData, null);
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane_1 = new JScrollPane();
 		GroupLayout gl_panelData = new GroupLayout(panelData);
 		gl_panelData.setHorizontalGroup(
 			gl_panelData.createParallelGroup(Alignment.LEADING)
@@ -311,8 +307,8 @@ public class MainFrame extends JFrame {
 				.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
 		);
 		
-		editorPaneData = new JEditorPane();
-		scrollPane_1.setViewportView(editorPaneData);
+		txtConsolaTextPane = new JTextPane();
+		scrollPane_1.setViewportView(txtConsolaTextPane);
 		panelData.setLayout(gl_panelData);
 		
 		JPanel panel = new JPanel();
@@ -330,7 +326,7 @@ public class MainFrame extends JFrame {
 				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
 		);
 		
-		editorPaneLog = new JEditorPane();
+		JEditorPane editorPaneLog = new JEditorPane();
 		scrollPane.setViewportView(editorPaneLog);
 		panel.setLayout(gl_panel);
 		
@@ -340,7 +336,8 @@ public class MainFrame extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 	}
 
-	//TODO: METODO para mostrar lo que se recibe desde el socket
+	
+	
 	
 	//Getters & Setters
 	public PrintWriter getPw() {
@@ -351,27 +348,47 @@ public class MainFrame extends JFrame {
 		this.pw = pw;
 	}
 
+	
 
 	///TODO: ver esto del hilo de comando de escucha
+	public synchronized void enviarComandoServidor(String comando)
+	{
+		this.cliente.comando = comando;
+		this.escribirTextoConsolaVisual(comando, Color.blue); 
+		this.pw.println(comando);
+		this.pw.flush();
+		
+		try {
+			Thread.sleep(500); ///Le doy tiempo suficiente para que funcione bien
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} 
+	}
 	
+	//TODO: METODO para mostrar lo que se recibe desde el socket
+	public synchronized void escribirTextoConsolaVisual(String mensaje, Color color)
+	{
+		SimpleAttributeSet attributeSet1  = new SimpleAttributeSet();  
+	    StyleConstants.setItalic(attributeSet1, true);  
+	    StyleConstants.setForeground(attributeSet1, color);  
+	    
+	    
+	    Document doc = txtConsolaTextPane.getStyledDocument();  
+		  try {
+			doc.insertString(doc.getLength(),  mensaje + "\n" , attributeSet1);
+		} catch (BadLocationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} 
+		  
+
+		  JScrollBar vertical = scrollPane_1.getVerticalScrollBar();
+		  vertical.setValue( vertical.getMaximum() );
+		  
+		  
+	  
+	}
 	
 
-	public JEditorPane getEditorPaneData() {
-		return editorPaneData;
-	}
-
-
-	public void setEditorPaneData(JEditorPane editorPaneData) {
-		this.editorPaneData = editorPaneData;
-	}
-
-
-	public JEditorPane getEditorPaneLog() {
-		return editorPaneLog;
-	}
-
-	public void setEditorPaneLog(JEditorPane editorPaneLog) {
-		this.editorPaneLog = editorPaneLog;
-	}
 }
 

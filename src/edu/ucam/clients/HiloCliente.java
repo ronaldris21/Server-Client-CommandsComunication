@@ -24,6 +24,12 @@ public class HiloCliente extends Thread {
 		this.cliente = cliente;
 		this.br =  br;
 	}
+	
+	public Cliente getCliente()
+	{
+		return this.cliente;
+	}
+	
 
 	public void run()
 	{
@@ -48,7 +54,7 @@ public class HiloCliente extends Thread {
 					String host = palabras[3];
 					int puerto = Integer.parseInt(palabras[4]); 
 					Socket socketDatos =  new Socket(host, puerto);
-					(new HiloDatosCliente(comandoActual,socketDatos)).start();
+					(new HiloDatosCliente(comandoActual,socketDatos,this)).start();
 				}
 			} catch (Exception e) {
 			}

@@ -70,4 +70,9 @@ public class Club implements Serializable
         }
         return jugadores;
     }
+    
+    public String toString()
+    {
+    	return String.format("\tClub %d: %s \n", id, nombre) ;
+    }
 }

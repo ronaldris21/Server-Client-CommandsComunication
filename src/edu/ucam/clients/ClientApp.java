@@ -1,5 +1,6 @@
 package edu.ucam.clients;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,6 +32,7 @@ public class ClientApp extends Cliente{
 		System.out.println(mensaje);
 		if(vistaPrincipal!=null)
 		{
+			vistaPrincipal.escribirTextoConsolaVisual(mensaje, Color.black);
 			
 			return;
 		}
@@ -94,7 +96,7 @@ public class ClientApp extends Cliente{
 			
 			
 			///Ejecuto interfaz
-			vistaPrincipal = new MainFrame(pw);
+			vistaPrincipal = new MainFrame(pw, this);
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {

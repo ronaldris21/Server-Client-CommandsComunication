@@ -56,7 +56,7 @@ public class HiloServidorCanalDatos extends Thread {
 					if(obj instanceof Club )
 					{
 						Club c = (Club) obj;
-						if(!c.getId().equals(""))///SI TIENE ID es porque es un update
+						if(c.getId()!=null && !c.getId().equals(""))///SI TIENE ID es porque es un update
 						{
 							Club clubServidor = this.hiloComandos.getServidor().getClubById(c.getId());
 							clubServidor.setNombre(c.getNombre());

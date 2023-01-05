@@ -27,6 +27,10 @@ import javax.swing.SpinnerNumberModel;
 
 public class AnadirJugador extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtnombre;
 	private JTextField txtapellidos;
@@ -54,7 +58,7 @@ public class AnadirJugador extends JFrame {
 		return this.s;
 	}
 	/**
-	 * Create the frame.
+	 * Create the frameu.
 	 */
 	public AnadirJugador(Socket s ) {
 		this.s= s;
@@ -105,7 +109,7 @@ public class AnadirJugador extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String nombre= txtnombre.getText();
 				String apellidos= txtapellidos.getText();
-				int goles = spgoles.getComponentCount();
+				int goles = Integer.parseInt( spgoles.getValue() .toString());///TODO, CHECK THIS count goles
 				///Valida nombres y apellidos
 				if(txtnombre.getText().equals("")){
 					System.out.println("Escribe el nombre");
@@ -121,7 +125,7 @@ public class AnadirJugador extends JFrame {
 				/// Crear el objeto del jugador
 				Jugador j= new Jugador("",nombre, apellidos,goles);
 				(new ObjetosPorSocket<Jugador>()).enviarObjetoPorCanalDatos(s, j);
-			
+				
 				dispose();
 				
 			}

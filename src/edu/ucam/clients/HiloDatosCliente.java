@@ -5,8 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import edu.ucam.clients.frames.ClubTableView;
-import edu.ucam.clients.frames.JugadorTableView;
+import edu.ucam.clients.frames.*;
 import edu.ucam.domain.Club;
 import edu.ucam.domain.Jugador;
 import edu.ucam.domain.ObjetosPorSocket;
@@ -15,9 +14,11 @@ public class HiloDatosCliente extends Thread{
 
 	private String comando;
 	private Socket socketDatos;
-	public HiloDatosCliente(String comando,Socket socketDatos) {
+	private HiloCliente hiloCliente;
+	public HiloDatosCliente(String comando,Socket socketDatos,HiloCliente hiloCliente) {
 		this.comando = comando;
 		this.socketDatos = socketDatos;
+		this.hiloCliente = hiloCliente;
 	}
 	
 	public void run()
@@ -37,6 +38,8 @@ public class HiloDatosCliente extends Thread{
 			    c =  new Club();
 			    c.setNombre(respuesta);
 			    
+			    
+			    this.hiloCliente.getCliente().mostrarMensajeInterfazVisual(c.toString());
 			    (new ObjetosPorSocket<Club>()).enviarObjetoPorCanalDatos(socketDatos,	c);
 				
 			break;
@@ -48,19 +51,25 @@ public class HiloDatosCliente extends Thread{
 				c =  new Club();
 				c.setNombre(respuesta);
 				c.setId(comando.split(" ")[2]);
-				 
+				
+				this.hiloCliente.getCliente().mostrarMensajeInterfazVisual(c.toString());
 				(new ObjetosPorSocket<Club>()).enviarObjetoPorCanalDatos(socketDatos, c);
 				break;
 				
 			case "GETCLUB": 
 				c = (new ObjetosPorSocket<Club>()).recibirObjeto(socketDatos);
 				
-				(new ClubTableView(c)).setVisible(true);
+				this.hiloCliente.getCliente().mostrarMensajeInterfazVisual(c.toString());
 				break;
 		
 			case "LISTCLUBES":
 				ArrayList<Club> listaC = (new ObjetosPorSocket<ArrayList<Club>>()).recibirObjeto(socketDatos);
-				(new ClubTableView(listaC)).setVisible(true);
+				
+				for(Club cc : listaC)
+					respuesta += cc.toString();
+				
+				this.hiloCliente.getCliente().mostrarMensajeInterfazVisual(respuesta);
+				
 
 				break;
 			
@@ -72,7 +81,9 @@ public class HiloDatosCliente extends Thread{
 				///Receive Data
 				j = (new ObjetosPorSocket<Jugador>()).recibirObjeto(socketDatos);
 				///Openview
+				System.out.println(j);
 				(new JugadorTableView(j)).setVisible(true);
+				
 				
 				break;
 				

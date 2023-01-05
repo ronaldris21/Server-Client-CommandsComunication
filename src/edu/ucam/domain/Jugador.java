@@ -69,4 +69,9 @@ public class Jugador implements Serializable
             --this.goles;
         }
     }
+    
+    public String toString()
+    {
+    	return String.format("\tJugador %d: %s %s - goles: %d\n", id, nombre,apellidos,goles) ;
+    }
 }
