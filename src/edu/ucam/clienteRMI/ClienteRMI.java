@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 import edu.ucam.domain.Cultivo;
@@ -32,15 +34,17 @@ public class ClienteRMI {
 			Finca f = null;
 			Cultivo c = null;
 			System.out.println("*****MENU*****"
-					+ "\n1- A�adir finca"
+					+ "\n1- Agregar finca"
 					+ "\n2- Borrar finca"
 					+ "\n3- Actualizar finca"
 					+ "\n4- Obtener finca por ID"
-					+ "\n5- A�adir cultivo"
-					+ "\n6- Borrar cultivo"
-					+ "\n7- Actualizar cultivo"
-					+ "\n8- Obtener cultivo por ID"
-					+ "\n9-Salir"
+					+ "\n5- Ver Fincas"
+					+ "\n6- Ver Cultivos de la finca"
+					+ "\n7- Agregar cultivo"
+					+ "\n8- Borrar cultivo"
+					+ "\n9- Actualizar cultivo"
+					+ "\n10- Obtener cultivo por ID"
+					+ "\11-Salir"
 					+"\nSeleccione una opcion:");
 			op =  teclado.nextLine();
 			
@@ -129,7 +133,41 @@ public class ClienteRMI {
 				
 				System.out.println(service.getFincabyID(idFinca));
 				break;
+				
 			case "5":
+				//+ "\n5- Ver Fincas"
+				
+				
+				ArrayList<Finca> lFincas = service.getFincas();
+				for (Finca finca : lFincas) {
+					System.out.println("\t" +finca);
+				}
+				
+				break;
+				
+			case "6":
+				//+ "\n6- Ver Cultivos de la finca"
+				
+				esCorrecto=false;
+				do
+				{
+					try {
+						System.out.println("Ingrese el id de la finca:");
+						idFinca = Integer.parseInt(teclado.nextLine());
+						esCorrecto=true;
+					} catch (Exception e) {
+					}
+				}while(esCorrecto==false);
+				
+				
+				ArrayList<Cultivo> lCultivos = service.getCultivosFinca(idFinca);
+				for (Cultivo cultivo : lCultivos) {
+					System.out.println("\t" +cultivo);
+				}
+				
+				
+				break;
+			case "7":
 				
 				esCorrecto=false;
 				do
@@ -165,7 +203,7 @@ public class ClienteRMI {
 				
 				System.out.println(service.addCultivoFinca(idFinca, c));
 				break;
-			case "6":
+			case "8":
 				esCorrecto=false;
 				do
 				{
@@ -179,7 +217,7 @@ public class ClienteRMI {
 				System.out.println(service.removeCultivoFinca(idCultivo));
 				break;
 				
-			case "7":
+			case "9":
 				c = new Cultivo();
 				
 				esCorrecto=false;
@@ -228,7 +266,7 @@ public class ClienteRMI {
 				
 				System.out.println(service.updateCultivoFinca(idCultivo, c));
 				break;
-			case "8":
+			case "10":
 				esCorrecto=false;
 				do
 				{
@@ -243,7 +281,7 @@ public class ClienteRMI {
 				break;
 						}
 	
-		}while(!op.equals("9"));
+		}while(!op.equals("11"));
 		System.out.println("Hasta pronto");
 	}
 }
