@@ -22,7 +22,7 @@ public class FincasAdministrator extends UnicastRemoteObject implements IFincasA
 		this.lFincas =  new ArrayList<Finca>();
 	}
 	
-
+	
 	@Override
 	public String hola() throws RemoteException {
 		return "Bienvenido - Conectado exitosamente";
@@ -84,23 +84,43 @@ public class FincasAdministrator extends UnicastRemoteObject implements IFincasA
 
 	@Override
 	public String addCultivoFinca(int idFinca, Cultivo c) throws RemoteException {
-		c.setIdFinca(idFinca);
+		Finca f = this.getFincabyID(idFinca);
+		if(f==null)
+			return "No existe la finca a la que se quiere agregar el cultivo";
 		
-		return null;
+		c.setIdFinca(idFinca);
+		c.setId(counterCultivos++);
+		
+		this.lCultivos.add(c);
+		
+		return "Cultivo agregado a la finca: "+ f.getNombreFinca();
 	}
 
 
 	@Override
 	public String removeCultivoFinca(int idCultivo) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if(this.lCultivos.removeIf(f-> f.getId() == idCultivo))
+		{
+			
+			return "Cultivo eliminado";
+		}
+		return "No existe el cultivo a eliminar";
 	}
 
 
 	@Override
 	public String updateCultivoFinca(int idCultivo, Cultivo c) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		Cultivo cultivo = this.getCultivobyId(idCultivo);
+		if(cultivo!=null)
+		{
+			cultivo.setIdFinca(c.getIdFinca());
+			cultivo.setNombreCultivo(c.getNombreCultivo());
+			cultivo.setPresupuesto(c.getPresupuesto());
+
+			return "Datos del cultivo actualizados";
+		}
+		return "No fue posible actualizar los datos del cultivo, no se encontró";
 	}
 
 
