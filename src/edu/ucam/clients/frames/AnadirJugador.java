@@ -25,6 +25,11 @@ import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+/**
+ * <p>
+*Esta es la clase que genera la vista en la cual se puede anadir a un jugador
+*</p>
+*/
 public class AnadirJugador extends JFrame {
 
 	/**
@@ -40,6 +45,9 @@ public class AnadirJugador extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			/**
+			 * 	Se creal el frame
+			 */
 			public void run() {
 				try {
 					AnadirJugador frame = new AnadirJugador(null);
@@ -57,9 +65,14 @@ public class AnadirJugador extends JFrame {
 	public Socket getSocket() {
 		return this.s;
 	}
-	/**
-	 * Create the frameu.
-	 */
+/**
+ * 
+ * @param s
+ * Se ponen el nombre del jugador, el apellido y el numero de goles.
+ *  Despues se le da al boton de aceptar y se guarda en la lista de 
+ * jugadores
+ */
+	
 	public AnadirJugador(Socket s ) {
 		this.s= s;
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);

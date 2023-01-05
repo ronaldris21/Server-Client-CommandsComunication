@@ -40,12 +40,17 @@ public class MainFrame extends JFrame {
 
 	/**
 	 * 
-	 */
+	 *  
+	 * <p>
+	*Esta es la vista principal de la aplicacion.  
+	*</p>
+	*/
 	
 	public MainFrame getVista()
 	{
 		return this;
 	}
+	
 	
 	private static final long serialVersionUID = -4437042091596383165L;
 
@@ -60,6 +65,13 @@ public class MainFrame extends JFrame {
 	private ClientApp cliente; 
 
 	//Constructor
+	/**
+	 * 
+	 * @param pw
+	 * En ella se podran elegir los comandos visualmente o
+	*escribirlos por teclado. Ademas se escribiran por pantalla todos los comandos usados y tambien se pueden ver las
+	*las respuestas del servidor.
+	 */
 	public MainFrame(PrintWriter pw, ClientApp cliente) {
         counterCommand = 0;
         this.pw = pw;

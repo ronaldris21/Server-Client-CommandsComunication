@@ -10,6 +10,12 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 
+/**
+ * <p>
+*Esta es la clase que inicia EL cliente.
+*</p>
+*/
+
 public class Cliente {
 
 	
@@ -43,7 +49,9 @@ public class Cliente {
 	{
 		isActive = status;
 	}
-	
+	/**
+	 *  Ejecuta la aplicacion del cliente. Se conecta el socket al servidor.
+	 */
 	public void ejecutar()
 	{
 		try {
@@ -83,11 +91,20 @@ public class Cliente {
 		}
 	}
 	
+	
+	/**
+	 *  Muestra un mensaje en la interfaz visual o en la consola segun se este ejecutando.
+	 */
 	public void mostrarMensajeInterfazVisual(String mensaje)
 	{
 		System.out.println(mensaje);
 	}
 
+	/**
+	 * 
+	 * @param args
+	 * Ejecuta la aplicacion en modo consola
+	 */
 	public static void main(String[] args) {
 		(new Cliente()).ejecutar();
 	}
