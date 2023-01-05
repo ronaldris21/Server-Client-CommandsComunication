@@ -73,9 +73,16 @@ public class ClienteRMI {
 				
 				break;
 			case "2": 
-				System.out.println("Ingrese el ID de la finca:");
-				idFinca = teclado.nextInt();
-				
+				esCorrecto=false;
+				do
+				{
+					try {
+						System.out.println("Ingrese el id de la finca:");
+						idFinca = Integer.parseInt(teclado.nextLine());
+						esCorrecto=true;
+					} catch (Exception e) {
+					}
+				}while(esCorrecto==false);
 				System.out.println(service.deleteFinca(idFinca));
 				break;
 			case "3": //validado
@@ -91,7 +98,7 @@ public class ClienteRMI {
 					} catch (Exception e) {
 					}
 				}while(esCorrecto==false);
-				f.setDuenoFinca(respuesta);
+				
 				
 				do
 				{
@@ -109,8 +116,16 @@ public class ClienteRMI {
 				System.out.println(service.updateFinca(idFinca, f));
 				break;
 			case "4":
-				System.out.println("Ingrese la matricula del coche:");
-				idFinca = teclado.nextInt();
+				esCorrecto=false;
+				do
+				{
+					try {
+						System.out.println("Ingrese el id de la finca:");
+						idFinca = Integer.parseInt(teclado.nextLine());
+						esCorrecto=true;
+					} catch (Exception e) {
+					}
+				}while(esCorrecto==false);
 				
 				System.out.println(service.getFincabyID(idFinca));
 				break;
@@ -126,11 +141,19 @@ public class ClienteRMI {
 				System.out.println(service.addCultivoFinca(idFinca, cc));
 				break;
 			case "6":
-				System.out.println("Para eliminar un cultivo ingrese el id del cultivo:");
-				idCultivo = teclado.nextInt();
-				
+				esCorrecto=false;
+				do
+				{
+					try {
+						System.out.println("Para eliminar un cultivo ingrese el id del cultivo");
+						idCultivo = Integer.parseInt(teclado.nextLine());
+						esCorrecto=true;
+					} catch (Exception e) {
+					}
+				}while(esCorrecto==false);
 				System.out.println(service.removeCultivoFinca(idCultivo));
 				break;
+				
 			case "7":
 				System.out.println("Para modificar el cultivo ingrese el ID del cultivo:");
 				idCultivo = teclado.nextInt();
@@ -144,8 +167,16 @@ public class ClienteRMI {
 				System.out.println(service.updateCultivoFinca(idCultivo, cc));
 				break;
 			case "8":
-				System.out.println("Para consultar el cultivo ingrese el ID  del cultivo:");
-				idCultivo = teclado.nextInt();
+				esCorrecto=false;
+				do
+				{
+					try {
+						System.out.println("Para consultar el cultivo ingrese el ID del cultivo");
+						idCultivo = Integer.parseInt(teclado.nextLine());
+						esCorrecto=true;
+					} catch (Exception e) {
+					}
+				}while(esCorrecto==false);
 				System.out.println(service.getCultivobyId(idCultivo));
 				break;
 						}
