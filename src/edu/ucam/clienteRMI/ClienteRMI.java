@@ -60,7 +60,11 @@ public class ClienteRMI {
 			case "3":
 				System.out.println("Ingrese el id de la finca:");
 				idFinca = teclado.nextInt();
-				
+				System.out.println("Ingrese el nombre de la finca:");
+				finca = teclado.nextLine();
+				System.out.println("Ingrese el dueno de la finca:");
+				duenoFinca = teclado.nextLine();
+				ff= new Finca(finca, duenoFinca);
 				System.out.println(f.updateFinca(idFinca, ff));
 				break;
 			case "4":
@@ -89,16 +93,22 @@ public class ClienteRMI {
 			case "7":
 				System.out.println("Para modificar el cultivo ingrese el ID del cultivo:");
 				idCultivo = teclado.nextInt();
-				//System.out.println("Ingrese el precio de la venta:");
-				//precio = teclado.nextLine();
-				
-				//System.out.println(c.modVenta(matricula, precio));
+				System.out.println("Ingrese el ID de la finca:");
+				idFinca = teclado.nextInt();
+				System.out.println("Ingrese el cultivo:");
+				cultivo = teclado.nextLine();
+				System.out.println("Ingrese el presupuesto:");
+				presupuesto = teclado.nextFloat();
+				cc= new Cultivo(idFinca, cultivo, presupuesto);
+				System.out.println(f.updateCultivoFinca(idCultivo, cc));
 				break;
-				
+			case "8":
+				System.out.println("Para consultar el cultivo ingrese el ID  del cultivo:");
+				idCultivo = teclado.nextInt();
+				System.out.println(f.getCultivobyId(idCultivo));
+				break;
 						}
 	
-			
-			
 		}while(!op.equals("9"));
 		System.out.println("Hasta pronto");
 	}
