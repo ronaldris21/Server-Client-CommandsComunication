@@ -22,8 +22,9 @@ public class ClienteRMI {
 		String op = "";
 		Scanner teclado = new Scanner(System.in);
 		String respuesta;
-		int idFinca, idCultivo;
-		float presupuesto;
+		int idFinca = -1;
+		int idCultivo = -1;
+		float presupuesto = 0;
 		boolean esCorrecto=false;
 		
 		
@@ -55,7 +56,7 @@ public class ClienteRMI {
 				f= new Finca();
 				do
 				{
-					System.out.println("Ingrese el nombre de la finca:");
+					System.out.println("Ingrese el nombre de la finca: ");
 					respuesta = teclado.nextLine();
 				}while(respuesta!=null);
 				f.setNombreFinca(respuesta);
@@ -63,7 +64,7 @@ public class ClienteRMI {
 				
 				do
 				{
-					System.out.println("Ingrese el dueno de la finca:");
+					System.out.println("Ingrese el dueno de la finca: ");
 					respuesta = teclado.nextLine();
 				}while(respuesta!=null);
 				f.setDuenoFinca(respuesta);
@@ -73,7 +74,7 @@ public class ClienteRMI {
 				
 				break;
 			case "2": 
-				System.out.println("Ingrese el ID de la finca:");
+				System.out.println("Ingrese el ID de la finca: ");
 				idFinca = teclado.nextInt();
 				
 				System.out.println(service.deleteFinca(idFinca));
@@ -85,45 +86,69 @@ public class ClienteRMI {
 				do
 				{
 					try {
-						System.out.println("Ingrese el id de la finca:");
+						System.out.println("Ingrese el id de la finca: ");
 						idFinca = Integer.parseInt(teclado.nextLine());
 						esCorrecto=true;
 					} catch (Exception e) {
 					}
 				}while(esCorrecto==false);
-				f.setDuenoFinca(respuesta);
 				
 				do
 				{
-					System.out.println("Ingrese el nombre de la finca:");
+					System.out.println("Ingrese el nombre de la finca: ");
 					respuesta = teclado.nextLine();
 				}while(respuesta!=null);
 				f.setNombreFinca(respuesta);
 				
 				do
 				{
-					System.out.println("Ingrese el dueno de la finca:");
+					System.out.println("Ingrese el dueno de la finca: ");
 					respuesta = teclado.nextLine();
 				}while(respuesta!=null);
 				f.setDuenoFinca(respuesta);
 				System.out.println(service.updateFinca(idFinca, f));
 				break;
 			case "4":
-				System.out.println("Ingrese la matricula del coche:");
+				System.out.println("Ingrese la matricula del coche: ");
 				idFinca = teclado.nextInt();
 				
 				System.out.println(service.getFincabyID(idFinca));
 				break;
 			case "5":
 				
-				System.out.println("Para registrar un cultivo ingrese el ID  de la finca:");
-				idFinca = teclado.nextInt();
-				System.out.println("Ingrese el cultivo:");
-				cultivo = teclado.nextLine();
-				System.out.println("Ingrese el presupuesto:");
-				presupuesto = teclado.nextFloat();
-				cc= new Cultivo(idFinca, cultivo, presupuesto);
-				System.out.println(service.addCultivoFinca(idFinca, cc));
+				esCorrecto=false;
+				do
+				{
+					try {
+						System.out.println("Para registrar un cultivo ingrese el ID  de la finca: ");
+						idFinca = Integer.parseInt(teclado.nextLine());
+						esCorrecto=true;
+					} catch (Exception e) {
+					}
+				}while(esCorrecto==false);
+				
+				c = new Cultivo();
+				do
+				{
+					System.out.println("Ingrese el nombre del cultivo: ");
+					respuesta = teclado.nextLine();
+				}while(respuesta!=null);
+				c.setNombreCultivo(respuesta);
+				
+				
+				esCorrecto=false;
+				do
+				{
+					try {
+						System.out.println("Ingrese el presupuesto a gastar para el cultivo: ");
+						presupuesto = Float.parseFloat(teclado.nextLine());
+						esCorrecto=true;
+					} catch (Exception e) {
+					}
+				}while(esCorrecto==false && presupuesto<0);
+				c.setPresupuesto(presupuesto);
+				
+				System.out.println(service.addCultivoFinca(idFinca, c));
 				break;
 			case "6":
 				System.out.println("Para eliminar un cultivo ingrese el id del cultivo:");
@@ -132,16 +157,53 @@ public class ClienteRMI {
 				System.out.println(service.removeCultivoFinca(idCultivo));
 				break;
 			case "7":
-				System.out.println("Para modificar el cultivo ingrese el ID del cultivo:");
-				idCultivo = teclado.nextInt();
-				System.out.println("Ingrese el ID de la finca:");
-				idFinca = teclado.nextInt();
-				System.out.println("Ingrese el cultivo:");
-				cultivo = teclado.nextLine();
-				System.out.println("Ingrese el presupuesto:");
-				presupuesto = teclado.nextFloat();
-				cc= new Cultivo(idFinca, cultivo, presupuesto);
-				System.out.println(service.updateCultivoFinca(idCultivo, cc));
+				c = new Cultivo();
+				
+				esCorrecto=false;
+				do
+				{
+					try {
+						System.out.println("Para modificar el cultivo ingrese el ID del cultivo:");
+						idCultivo = Integer.parseInt(teclado.nextLine());
+						esCorrecto=true;
+					} catch (Exception e) {
+					}
+				}while(esCorrecto==false);
+				c.setId(idCultivo);
+				
+				esCorrecto=false;
+				do
+				{
+					try {
+						System.out.println("Ingrese el ID de la finca del cultivo: ");
+						idFinca = Integer.parseInt(teclado.nextLine());
+						esCorrecto=true;
+					} catch (Exception e) {
+					}
+				}while(esCorrecto==false);
+				c.setIdFinca(idFinca);
+				
+				do
+				{
+					System.out.println("Ingrese el nuevo nombre del cultivo: ");
+					respuesta = teclado.nextLine();
+				}while(respuesta!=null);
+				c.setNombreCultivo(respuesta);
+				
+				
+				esCorrecto=false;
+				do
+				{
+					try {
+						System.out.println("Ingrese el nuevo presupuesto: ");
+						presupuesto = Float.parseFloat(teclado.nextLine());
+						esCorrecto=true;
+					} catch (Exception e) {
+					}
+				}while(esCorrecto==false && presupuesto<0);
+				c.setPresupuesto(presupuesto);
+				
+				System.out.println(service.updateCultivoFinca(idCultivo, c));
 				break;
 			case "8":
 				System.out.println("Para consultar el cultivo ingrese el ID  del cultivo:");
