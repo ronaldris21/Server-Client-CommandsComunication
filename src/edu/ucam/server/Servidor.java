@@ -1,11 +1,7 @@
 package edu.ucam.server;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import edu.ucam.clients.*;
 import edu.ucam.domain.Club;
-import edu.ucam.domain.CodigosRespuesta;
 import edu.ucam.domain.Jugador;
 
 import java.io.BufferedReader;

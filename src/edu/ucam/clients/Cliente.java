@@ -71,7 +71,10 @@ public class Cliente {
 			while(true)
 			{
 				if(!isActive())
+				{
+					teclado.close();
 					return;
+				}
 				try {
 					comando =  teclado.nextLine();
 					pw.println(comando);

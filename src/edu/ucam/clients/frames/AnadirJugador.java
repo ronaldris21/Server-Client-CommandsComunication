@@ -6,20 +6,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import edu.ucam.clients.ObjetosPorSocket;
 import edu.ucam.domain.Jugador;
-import edu.ucam.domain.ObjetosPorSocket;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.BoxLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.CardLayout;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;

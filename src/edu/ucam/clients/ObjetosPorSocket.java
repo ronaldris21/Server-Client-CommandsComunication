@@ -1,4 +1,4 @@
-package edu.ucam.domain;
+package edu.ucam.clients;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

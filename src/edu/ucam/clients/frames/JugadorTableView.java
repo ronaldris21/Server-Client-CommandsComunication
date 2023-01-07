@@ -3,14 +3,11 @@ package edu.ucam.clients.frames;
 
 
 import java.util.ArrayList;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.table.DefaultTableModel;
 
 import edu.ucam.domain.Jugador;
 
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -26,7 +23,11 @@ import javax.swing.SwingConstants;
 public class JugadorTableView extends javax.swing.JFrame {
 
 
-    ArrayList<Jugador> lista = new ArrayList<>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	ArrayList<Jugador> lista = new ArrayList<>();
    
     public JugadorTableView(ArrayList<Jugador> data) {
         initComponents();

@@ -2,18 +2,7 @@ package edu.ucam.clients;
 
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
-
-import edu.ucam.clients.frames.AnadirJugador;
-import edu.ucam.clients.frames.ClubTableView;
-import edu.ucam.clients.frames.JugadorTableView;
-import edu.ucam.domain.*;
 
 /**
  * <p>

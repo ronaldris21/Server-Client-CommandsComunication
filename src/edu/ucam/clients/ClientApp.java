@@ -12,8 +12,6 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
-
-import edu.ucam.domain.CodigosRespuesta;
 /**
  * <p>
 *Esta es la clase que inicia la aplicacion visual, hereda de la clase cliente.
@@ -122,7 +120,10 @@ public class ClientApp extends Cliente{
 			while(true)
 			{
 				if(!isActive())
+				{
+					teclado.close();
 					return;
+				}
 				try {
 					comando =  teclado.nextLine();
 					pw.println(comando);
@@ -134,6 +135,7 @@ public class ClientApp extends Cliente{
 					
 				} catch (Exception e) {} //En caso que el servidor cierre el socket!
 			}
+			
 			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

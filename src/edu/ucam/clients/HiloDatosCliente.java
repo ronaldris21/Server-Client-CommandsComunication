@@ -9,7 +9,6 @@ import edu.ucam.clients.frames.AnadirJugador;
 import edu.ucam.clients.frames.JugadorTableView;
 import edu.ucam.domain.Club;
 import edu.ucam.domain.Jugador;
-import edu.ucam.domain.ObjetosPorSocket;
 /**
  * <p>
 *Esta es la clase que abreclas aplicaciones visuales
