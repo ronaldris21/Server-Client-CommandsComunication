@@ -38,7 +38,7 @@ public class HiloDatosCliente extends Thread{
 		
 		switch(comando.split(" ")[1])
 		{
-			case "ADDCLUB":
+			case "ADDCLUB":  //TODO: SHIT NOT WORKING ON CONSOLE
 				do
 				{
 					respuesta = JOptionPane.showInputDialog("Ingresa el nuevo nombre del club");
@@ -76,7 +76,7 @@ public class HiloDatosCliente extends Thread{
 				for(Club cc : listaC)
 					respuesta += cc.toString();
 				
-				this.hiloCliente.getCliente().mostrarMensajeInterfazVisual(respuesta);
+				this.hiloCliente.getCliente().mostrarMensajeInterfazVisual(listaC.toString());
 				
 
 				break;
@@ -91,6 +91,7 @@ public class HiloDatosCliente extends Thread{
 				///Openview
 				System.out.println(j);
 				(new JugadorTableView(j)).setVisible(true);
+				this.hiloCliente.getCliente().mostrarMensajeInterfazVisual(j.toString());
 				
 				
 				break;
@@ -100,7 +101,7 @@ public class HiloDatosCliente extends Thread{
 				///Receive Data
 				listaJ = (new ObjetosPorSocket<ArrayList<Jugador>>()).recibirObjeto(socketDatos);
 				///Openview
-				System.out.println(listaJ);
+				this.hiloCliente.getCliente().mostrarMensajeInterfazVisual(listaJ.toString());
 				(new JugadorTableView(listaJ)).setVisible(true);
 				break;
 				
@@ -108,6 +109,7 @@ public class HiloDatosCliente extends Thread{
 				///Receive Data
 				listaJ = (new ObjetosPorSocket<ArrayList<Jugador>>()).recibirObjeto(socketDatos);
 				///Openview
+				this.hiloCliente.getCliente().mostrarMensajeInterfazVisual(listaJ.toString());
 				(new JugadorTableView(listaJ)).setVisible(true);
 				break;
 				

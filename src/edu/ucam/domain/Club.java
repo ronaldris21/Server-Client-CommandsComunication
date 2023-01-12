@@ -73,6 +73,6 @@ public class Club implements Serializable
     
     public String toString()
     {
-    	return String.format("\tClub %d: %s \n", id, nombre) ;
+    	return String.format("\tClub %s: %s \n", id, nombre) ;
     }
 }

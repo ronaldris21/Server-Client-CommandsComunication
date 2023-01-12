@@ -66,7 +66,7 @@ public class Cliente {
 			//(new VistaPrincipalCliente(socket)).setVisible(true);
 			
 			///Cliente se queda escribiendo
-			Scanner teclado =  new Scanner(System.in);
+			Scanner teclado =  new Scanner(System.in);						
 			
 			while(true)
 			{

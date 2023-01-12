@@ -78,6 +78,6 @@ public class Jugador implements Serializable
     
     public String toString()
     {
-    	return String.format("\tJugador %d: %s %s - goles: %d\n", id, nombre,apellidos,goles) ;
+    	return String.format("\tJugador %s: %s %s - goles: %d\n", id, nombre,apellidos,goles) ;
     }
 }
