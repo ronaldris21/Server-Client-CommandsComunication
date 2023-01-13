@@ -20,12 +20,14 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.JDesktopPane;
 import java.awt.Color;
+import java.awt.Scrollbar;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JEditorPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JButton;
 
 
 public class MainFrame extends JFrame {
@@ -49,12 +51,16 @@ public class MainFrame extends JFrame {
 	//Atributes
 	private JPanel contentPane;
 	private PrintWriter pw;
-	JTextPane txtConsolaTextPane;
-	JScrollPane scrollPane_1;
 	
 	private int counterCommand;
 
-	private ClientApp cliente; 
+	private ClientApp cliente;
+
+	private JTextPane txtConsolaTextPane;
+
+	private JScrollPane scrollPane_1,scrolltxtComandosAEnviar;
+
+	private JTextPane txtComandosAEnviar; 
 
 	//Constructor
 	/**
@@ -77,6 +83,7 @@ public class MainFrame extends JFrame {
 	            		enviarComandoServidor("ClienteApp EXIT");
 	        			//clientThreadCommands.setSuspended(true); //TODO: CHECK
 	            		getVista().dispose();
+	            		System.exit(0);
 	        		}
 	        		catch(Exception t) {
 	        		}
@@ -89,30 +96,19 @@ public class MainFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 503, 665);
 		
-		JDesktopPane desktopPane = new JDesktopPane();
-		desktopPane.setBackground(Color.GRAY);
-		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		
-		JSplitPane splitPane = new JSplitPane();
-		splitPane.setDividerSize(3);
-		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
 		JPanel panel_1 = new JPanel();
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
-				.addComponent(splitPane, GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(splitPane, GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE))
+				.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
 		);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -281,62 +277,64 @@ public class MainFrame extends JFrame {
 			}
 		});
 		mnTratamientos.add(mntmJugadorListarJugadoresClub);
+		
+		txtConsolaTextPane = new JTextPane();
+		txtConsolaTextPane.setEditable(false);
+		scrollPane_1 = new JScrollPane(txtConsolaTextPane);
+		
+		JButton btnEnviarComandos = new JButton("Enviar");
+		btnEnviarComandos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				btnEnviarComandos.setEnabled(false);
+				String[] lineasComandos = txtComandosAEnviar.getText().trim().split("\n") ;
+				for(String linea : lineasComandos)
+				{
+					System.out.println("Linea: "+linea);
+					if(!linea.trim().equals(""))
+					{
+						enviarComandoServidor(linea.trim());
+						scrolltxtComandosAEnviar.repaint();
+					}
+						
+				}
+				btnEnviarComandos.setEnabled(true);
+				txtComandosAEnviar.setText("");
+				
+			}
+		});
+		
+		txtComandosAEnviar = new JTextPane();
+		scrolltxtComandosAEnviar =  new JScrollPane(txtComandosAEnviar);
+		
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addComponent(menuBar, GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
+				.addComponent(menuBar, GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addGap(10)
+					.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
+					.addGap(10))
+				.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(scrolltxtComandosAEnviar, GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnEnviarComandos)
+					.addContainerGap())
 		);
 		gl_panel_1.setVerticalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
 					.addComponent(menuBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGap(18)
+					.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 491, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(scrolltxtComandosAEnviar, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnEnviarComandos, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
 		);
 		panel_1.setLayout(gl_panel_1);
-		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		splitPane.setRightComponent(tabbedPane);
-		
-		JPanel panelData = new JPanel();
-		tabbedPane.addTab("Data", null, panelData, null);
-		
-		scrollPane_1 = new JScrollPane();
-		GroupLayout gl_panelData = new GroupLayout(panelData);
-		gl_panelData.setHorizontalGroup(
-			gl_panelData.createParallelGroup(Alignment.LEADING)
-				.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 746, Short.MAX_VALUE)
-		);
-		gl_panelData.setVerticalGroup(
-			gl_panelData.createParallelGroup(Alignment.LEADING)
-				.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
-		);
-		
-		txtConsolaTextPane = new JTextPane();
-		scrollPane_1.setViewportView(txtConsolaTextPane);
-		panelData.setLayout(gl_panelData);
-		
-		JPanel panel = new JPanel();
-		tabbedPane.addTab("Log", null, panel, null);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 746, Short.MAX_VALUE)
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
-		);
-		
-		JEditorPane editorPaneLog = new JEditorPane();
-		scrollPane.setViewportView(editorPaneLog);
-		panel.setLayout(gl_panel);
-		
-		
-		splitPane.setLeftComponent(desktopPane);
-		splitPane.setDividerLocation(350);
 		contentPane.setLayout(gl_contentPane);
 	}
 
@@ -359,18 +357,20 @@ public class MainFrame extends JFrame {
 	{
 		this.cliente.comando = comando;
 		this.escribirTextoConsolaVisual(comando, Color.blue); 
-		this.pw.println(comando);
-		this.pw.flush();
-		
 		try {
-			Thread.sleep(500); ///Le doy tiempo suficiente para que funcione bien
+			//Thread.sleep()
+			Thread.sleep(2000); ///Le doy tiempo suficiente para que funcione bien
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} 
+		this.pw.println(comando);
+		this.pw.flush();
+		
+		
 	}
 	
 	//TODO: METODO para mostrar lo que se recibe desde el socket
-	public synchronized void escribirTextoConsolaVisual(String mensaje, Color color)
+	public void escribirTextoConsolaVisual(String mensaje, Color color)
 	{
 		SimpleAttributeSet attributeSet1  = new SimpleAttributeSet();  
 	    StyleConstants.setItalic(attributeSet1, true);  
@@ -384,15 +384,23 @@ public class MainFrame extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} 
+		
 		  
 
-		  JScrollBar vertical = scrollPane_1.getVerticalScrollBar();
-		  vertical.setValue( vertical.getMaximum() );
-		  
-		  
+		JScrollBar vertical = scrollPane_1.getVerticalScrollBar();
+		vertical.setValue( vertical.getMaximum() +10);
+		txtConsolaTextPane.repaint();
 	  
 	}
 	
+	/**
+	 * 
+	 * @param args
+	 * Ejecuta la aplicacion en modo visual
+	 */
+	public static void main(String[] args) {
+		(new ClientApp()).ejecutar();
 
+	}
 }
 

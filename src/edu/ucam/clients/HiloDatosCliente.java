@@ -90,7 +90,7 @@ public class HiloDatosCliente extends Thread{
 				j = (new ObjetosPorSocket<Jugador>()).recibirObjeto(socketDatos);
 				///Openview
 				System.out.println(j);
-				(new JugadorTableView(j)).setVisible(true);
+				//(new JugadorTableView(j)).setVisible(true);
 				this.hiloCliente.getCliente().mostrarMensajeInterfazVisual(j.toString());
 				
 				
@@ -102,7 +102,7 @@ public class HiloDatosCliente extends Thread{
 				listaJ = (new ObjetosPorSocket<ArrayList<Jugador>>()).recibirObjeto(socketDatos);
 				///Openview
 				this.hiloCliente.getCliente().mostrarMensajeInterfazVisual(listaJ.toString());
-				(new JugadorTableView(listaJ)).setVisible(true);
+				//(new JugadorTableView(listaJ)).setVisible(true);
 				break;
 				
 			case "LISTJUGFROMCLUB":
@@ -110,7 +110,7 @@ public class HiloDatosCliente extends Thread{
 				listaJ = (new ObjetosPorSocket<ArrayList<Jugador>>()).recibirObjeto(socketDatos);
 				///Openview
 				this.hiloCliente.getCliente().mostrarMensajeInterfazVisual(listaJ.toString());
-				(new JugadorTableView(listaJ)).setVisible(true);
+				//(new JugadorTableView(listaJ)).setVisible(true);
 				break;
 				
 			default:

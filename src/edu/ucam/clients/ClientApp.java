@@ -138,8 +138,20 @@ public class ClientApp extends Cliente{
 			
 			
 		} catch (UnknownHostException e) {
+			int result = JOptionPane.showConfirmDialog(null, "No es posible conectar con el servidor. ¿Quieres volver a intentar conectarte?");
+			if (result == JOptionPane.YES_OPTION) 
+			{
+				(new ClientApp()).ejecutar();
+				return;
+			}
 			e.printStackTrace();
 		} catch (IOException e) {
+			int result = JOptionPane.showConfirmDialog(null, "No es posible conectar con el servidor. ¿Quieres volver a intentar conectarte?");
+			if (result == JOptionPane.YES_OPTION) 
+			{
+				(new ClientApp()).ejecutar();
+				return;
+			}
 			e.printStackTrace();
 		}
 	}

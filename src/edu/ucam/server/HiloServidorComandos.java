@@ -201,7 +201,9 @@ public class HiloServidorComandos extends Thread{
 										for (int ii=0; ii<c.getJugadores().size();ii++) 
 											if(palabras[2].equals( c.getJugadores().get(ii).getId()))
 											{
+												Jugador j = c.getJugadores().get(ii);
 												c.getJugadores().remove(ii);
+												servidor.getJugadores().add(j);
 												EnviarMensaje(TipoRespuesta.OK, palabras[0],CodigosRespuesta.OK, "Jugador eliminado del equipo");
 												Bandera= true;
 												break;
