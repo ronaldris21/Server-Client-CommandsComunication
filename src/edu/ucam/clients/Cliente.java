@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 
 /**
  * <p>
-*Esta es la clase que inicia EL cliente.
+*Esta es la clase que inicia el cliente.
 *</p>
 */
 
@@ -26,7 +26,7 @@ public class Cliente {
 	protected Socket socket;
 	protected String comando;
 	
-	///ARRAYLIST DE LOS COMANDOS ENVIADOS!!! ASÍ OBTENGO EL COMANDO ENVIADO EN BASE A LOS ALMACENADOS Y MANDO ESE COMO PARAMETRO
+	///ARRAYLIST DE LOS COMANDOS ENVIADOS. ASI OBTENGO EL COMANDO ENVIADO EN BASE A LOS ALMACENADOS Y MANDO ESE COMO PARAMETRO
 	
 	public synchronized String getComando()
 	{

@@ -1,2 +1,5 @@
 module:PracticaDAD1
+edu.ucam.clients
+edu.ucam.clients.frames
 edu.ucam.domain
+edu.ucam.server

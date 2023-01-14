@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"PracticaDAD1","l":"edu.ucam.domain"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"PracticaDAD1","l":"edu.ucam.clients"},{"m":"PracticaDAD1","l":"edu.ucam.clients.frames"},{"m":"PracticaDAD1","l":"edu.ucam.domain"},{"m":"PracticaDAD1","l":"edu.ucam.server"}];updateSearchResults();

@@ -2,7 +2,7 @@ package edu.ucam.domain;
 /**
  * <p> 
  * Es una enumeracion para identificar 
- * con palabras los códigos de respuesta del servidor
+ * con palabras los codigos de respuesta del servidor
  * </p>
  */
 public enum CodigosRespuesta {

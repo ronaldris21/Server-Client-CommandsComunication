@@ -29,16 +29,14 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
 
-
+/** 
+ * <p>
+*Esta es la vista principal de la aplicacion.  
+*</p>
+*/
 public class MainFrame extends JFrame {
 
-	/**
-	 * 
-	 *  
-	 * <p>
-	*Esta es la vista principal de la aplicacion.  
-	*</p>
-	*/
+	
 	
 	public MainFrame getVista()
 	{
