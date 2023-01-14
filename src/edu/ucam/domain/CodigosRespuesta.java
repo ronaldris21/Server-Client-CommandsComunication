@@ -1,5 +1,10 @@
 package edu.ucam.domain;
-
+/**
+ * <p> 
+ * Es una enumeración para identificar 
+ * con palabras los códigos de respuesta del servidor
+ * </p>
+ */
 public enum CodigosRespuesta {
 	///2xx Correctos
 	//4xx fallado
@@ -13,6 +18,9 @@ public enum CodigosRespuesta {
 	
 	
 	private int codigo;
+	/**
+     * Obtiene el codigo
+     */
 	public int getCode()
 	{
 		return this.codigo;

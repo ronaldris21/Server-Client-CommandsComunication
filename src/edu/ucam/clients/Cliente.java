@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 
 /**
  * <p>
@@ -88,8 +90,20 @@ public class Cliente {
 				} catch (Exception e) {} //En caso que el servidor cierre el socket!
 			}
 		} catch (UnknownHostException e) {
+			int result = JOptionPane.showConfirmDialog(null, "No es posible conectar con el servidor. ¿Quieres volver a intentar conectarte?");
+			if (result == JOptionPane.YES_OPTION) 
+			{
+				(new Cliente()).ejecutar();
+				return;
+			}
 			e.printStackTrace();
 		} catch (IOException e) {
+			int result = JOptionPane.showConfirmDialog(null, "No es posible conectar con el servidor. ¿Quieres volver a intentar conectarte?");
+			if (result == JOptionPane.YES_OPTION) 
+			{
+				(new Cliente()).ejecutar();
+				return;
+			}
 			e.printStackTrace();
 		}
 	}

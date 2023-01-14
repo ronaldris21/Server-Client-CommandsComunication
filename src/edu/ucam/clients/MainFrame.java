@@ -120,6 +120,7 @@ public class MainFrame extends JFrame {
 		mntmSistemaConectador.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
 				//TODO: Conectados
+				enviarComandoServidor(++counterCommand+" SESIONES");
 			}
 		});
 		
@@ -309,13 +310,13 @@ public class MainFrame extends JFrame {
 		
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
+			gl_panel_1.createParallelGroup(Alignment.TRAILING)
 				.addComponent(menuBar, GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
 				.addGroup(gl_panel_1.createSequentialGroup()
 					.addGap(10)
 					.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
 					.addGap(10))
-				.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+				.addGroup(gl_panel_1.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(scrolltxtComandosAEnviar, GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -327,7 +328,7 @@ public class MainFrame extends JFrame {
 				.addGroup(gl_panel_1.createSequentialGroup()
 					.addComponent(menuBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
-					.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 491, GroupLayout.PREFERRED_SIZE)
+					.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING, false)
 						.addComponent(scrolltxtComandosAEnviar, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
@@ -355,16 +356,18 @@ public class MainFrame extends JFrame {
 	///TODO: ver esto del hilo de comando de escucha
 	public synchronized void enviarComandoServidor(String comando)
 	{
-		this.cliente.comando = comando;
+		
 		this.escribirTextoConsolaVisual(comando, Color.blue); 
+		this.cliente.comando = comando;
+		this.pw.println(comando);
+		this.pw.flush();
 		try {
 			//Thread.sleep()
-			Thread.sleep(2000); ///Le doy tiempo suficiente para que funcione bien
+			Thread.sleep(1000); ///Le doy tiempo suficiente para que funcione bien
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} 
-		this.pw.println(comando);
-		this.pw.flush();
+		
 		
 		
 	}
@@ -388,7 +391,7 @@ public class MainFrame extends JFrame {
 		  
 
 		JScrollBar vertical = scrollPane_1.getVerticalScrollBar();
-		vertical.setValue( vertical.getMaximum() +10);
+		vertical.setValue( vertical.getMaximum() +40);
 		txtConsolaTextPane.repaint();
 	  
 	}

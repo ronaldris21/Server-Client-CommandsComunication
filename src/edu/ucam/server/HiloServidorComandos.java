@@ -40,22 +40,6 @@ public class HiloServidorComandos extends Thread{
 			while(true)
 			{
 				try {
-					/*
-					System.out.println("CLUBES");
-					for (Club c1 :  this.servidor.getClubes()) {
-						System.out.println(c1.getId()+ " "+ c1.getNombre());
-						for (Jugador j1 : c1.getJugadores()) {
-							System.out.println("\t"+j1.getId()+ " "+ j1.getNombre());
-						}
-					}
-					
-					System.out.println();
-					System.out.println("JUGADORES");
-					
-					for (Jugador j1 : this.servidor.getJugadores()) {
-						System.out.println(j1.getId()+ " "+ j1.getNombre());
-					}
-					**/
 					
 					
 					String comando = br.readLine();
@@ -140,7 +124,25 @@ public class HiloServidorComandos extends Thread{
 								
 								break;
 							case "GETJUGADOR": //<number> GETJUGADOR <id>
-								(new HiloServidorCanalDatos(this, palabras[0], null, true)).start();
+								
+								
+								if(palabras.length<3)
+									EnviarMensaje(TipoRespuesta.FAILED, palabras[0],CodigosRespuesta.BADREQUEST, "Faltan parametros");
+								else 
+								{
+									boolean Bandera= false;
+									for (int i=0; i<this.servidor.getJugadores().size();i++) {
+									
+										if(palabras[2].equals(this.servidor.getJugadores().get(i).getId())) {
+											(new HiloServidorCanalDatos(this, palabras[0],this.servidor.getJugadores().remove(i), false)).start();
+											Bandera= true;
+											break;
+										}
+									}
+									if(Bandera==false) 
+										EnviarMensaje(TipoRespuesta.FAILED,palabras[0],CodigosRespuesta.NOTFOUND, "No se encontro el elemento");
+								}
+								
 								
 								break;
 							case "REMOVEJUGADOR": //<number> REMOVEJUGADOR <id>
@@ -181,8 +183,8 @@ public class HiloServidorComandos extends Thread{
 									
 									if(j!=null && c!=null) 
 									{
-										c.addJugador(j.getId(), j);
-										this.servidor.getJugadores().remove(j);
+										c.addJugador(j.getId(), j);//hashtable
+										this.servidor.getJugadores().remove(j);//arraylist
 										EnviarMensaje(TipoRespuesta.OK, palabras[0],CodigosRespuesta.OK, "Jugador añadido");
 									}
 									else 
@@ -197,19 +199,24 @@ public class HiloServidorComandos extends Thread{
 								else
 								{
 									Club c = this.servidor.getClubById(palabras[3]);
+									Jugador j = null;
 									if(c!= null)
 										for (int ii=0; ii<c.getJugadores().size();ii++) 
 											if(palabras[2].equals( c.getJugadores().get(ii).getId()))
 											{
-												Jugador j = c.getJugadores().get(ii);
-												c.getJugadores().remove(ii);
-												servidor.getJugadores().add(j);
-												EnviarMensaje(TipoRespuesta.OK, palabras[0],CodigosRespuesta.OK, "Jugador eliminado del equipo");
+												j = c.getJugadores().get(ii);
 												Bandera= true;
 												break;
 											}
-									if(Bandera==false) 
+									
+									if(!c.removeJugador(palabras[2])) 
 										EnviarMensaje(TipoRespuesta.FAILED, palabras[0],CodigosRespuesta.NOTFOUND, "No es posible realizar la acción");
+									else
+									{
+										servidor.getJugadores().add(j);
+										EnviarMensaje(TipoRespuesta.OK, palabras[0],CodigosRespuesta.OK, "Jugador eliminado del equipo");
+										
+									}
 								}
 								
 								break;

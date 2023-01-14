@@ -41,7 +41,7 @@ public class HiloDatosCliente extends Thread{
 			case "ADDCLUB":  //TODO: SHIT NOT WORKING ON CONSOLE
 				do
 				{
-					respuesta = JOptionPane.showInputDialog("Ingresa el nuevo nombre del club");
+					respuesta = JOptionPane.showInputDialog(null,"Ingresa el nuevo nombre del club");
 				}while(respuesta.equals(""));
 			    c =  new Club();
 			    c.setNombre(respuesta);
@@ -89,7 +89,6 @@ public class HiloDatosCliente extends Thread{
 				///Receive Data
 				j = (new ObjetosPorSocket<Jugador>()).recibirObjeto(socketDatos);
 				///Openview
-				System.out.println(j);
 				//(new JugadorTableView(j)).setVisible(true);
 				this.hiloCliente.getCliente().mostrarMensajeInterfazVisual(j.toString());
 				
