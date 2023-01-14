@@ -9,7 +9,12 @@ import edu.ucam.domain.Club;
 import edu.ucam.domain.CodigosRespuesta;
 import edu.ucam.domain.TipoRespuesta;
 import edu.ucam.domain.Jugador;
-
+/**
+ * <p> 
+ * Es un hilo que se crea en la parte del servidor que se crea para administrar cada cliente recibido. Se encarga de recibir
+ * comandos y mandar sus respectivas respuestas al cliente.
+ * </p>
+ */
 public class HiloServidorComandos extends Thread{
 
 	private Servidor servidor;
@@ -29,7 +34,9 @@ public class HiloServidorComandos extends Thread{
 		this.pw = pw;
 	}
 	
-	
+	/**
+     * Recibe los comandos y manda sus respectivas respuestas.
+     */
 	public void run()
 	{
 		pw.println("Conectado al servidor - Bienvenido al SISTEMA- Inicia sesion");
@@ -252,7 +259,9 @@ public class HiloServidorComandos extends Thread{
 	}
 
 	
-
+	/**
+     * Este metodo permite poner el nombre de usuario y la contraseña para posteriormente acceder a la aplicación general.
+     */
 	private boolean login() {
 
 		while(true)
@@ -314,7 +323,9 @@ public class HiloServidorComandos extends Thread{
 			}
 		}
 	}
-	
+	/**
+     * Este metodo cierra la aplicacion.
+     */
 	public boolean esExit(String[] palabras)
 	{
 		if((palabras.length>=2 && palabras[1].equals("EXIT")) )
@@ -333,7 +344,9 @@ public class HiloServidorComandos extends Thread{
 		}
 		return false;
 	}
-	
+	/**
+     * En este metodo se envia un mensaje
+     */
 	public void EnviarMensaje(TipoRespuesta tipoRespuesta, String IdPeticion, CodigosRespuesta codigo, String informacionAdicional)
 	{
 		String mensajeCompleto = String.format("%s %s %d %s", tipoRespuesta, IdPeticion, codigo.getCode(), informacionAdicional);

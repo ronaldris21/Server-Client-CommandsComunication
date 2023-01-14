@@ -353,7 +353,9 @@ public class MainFrame extends JFrame {
 
 	
 
-	///TODO: ver esto del hilo de comando de escucha
+	/**
+     * Metodo que envia los comandos al servidor
+     */
 	public synchronized void enviarComandoServidor(String comando)
 	{
 		
@@ -372,7 +374,9 @@ public class MainFrame extends JFrame {
 		
 	}
 	
-	//TODO: METODO para mostrar lo que se recibe desde el socket
+	/**
+     * Metodo para escribir el texto en la aplicacion visual
+     */
 	public void escribirTextoConsolaVisual(String mensaje, Color color)
 	{
 		SimpleAttributeSet attributeSet1  = new SimpleAttributeSet();  

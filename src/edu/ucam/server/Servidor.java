@@ -12,12 +12,15 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * @author ronal
- *
+ * <p> 
+ * Esta es la clase que hace de servidor. En esta instancia de guardar y recibir las conexiones de los 
+ * clientes que se conectan, puertos disponibles y los datos almacenados(jugadores, clubes).
+ * 
+ * </p>
  */
 public class Servidor {
 	
-	private ArrayList<HiloServidorComandos> hilosClientes;
+	private ArrayList<HiloServidorComandos>  hilosClientes;
 	private ArrayList<Club> club;
 	private ArrayList <Jugador> jugador;
 	private Boolean[] lpuertosDisponibles;
@@ -66,7 +69,9 @@ public class Servidor {
 		this.lpuertosDisponibles[8080 - PUERTOINICIALDATOS] = false; //8080
 	}
 	
-	
+	/**
+     * Elimina un cliente
+     */
 	public void eliminarCliente(HiloServidorComandos cliente)
 	{
 		///EXIT
@@ -74,7 +79,9 @@ public class Servidor {
 	}
 
 	
-	
+	/**
+     * Lanza el hilo del servidor que se queda recibiendo clientes eternamente.
+     */
 	public void ejecutar()
 	{
 		while(true)
@@ -125,27 +132,35 @@ public class Servidor {
 		if(puerto>=0 && puerto<lpuertosDisponibles.length)
 			this.lpuertosDisponibles[puerto] = status;
 	}
-	
-	
-	
+	/**
+     * Esta función agrega un jugador por medio de sus parámetros.
+     */
+	public void agregarJugadorServidor(String nombre, String apellidos, int goles)
+	{
+		Jugador j = new Jugador(String.valueOf(++this.counterJugadores), nombre, apellidos, goles);
+		this.jugador.add(j);
+	}
+	/**
+     * Esta función agrega un jugador por medio de otra instancia de jugador.
+     */
 	public void agregarJugadorServidor(Jugador j)
 	{
 		this.agregarJugadorServidor(j.getNombre(), j.getApellidos(), j.getGoles());
 		
 	}
 	
-	public void agregarJugadorServidor(String nombre, String apellidos, int goles)
-	{
-		Jugador j = new Jugador(String.valueOf(++this.counterJugadores), nombre, apellidos, goles);
-		this.jugador.add(j);
-	}
 	
+	/**
+     * Esta función agrega un club por medio de sus parámetros.
+     */
 	public void agregarClubServidor(String nombre)
 	{
 		Club c = new Club(String.valueOf(++this.counterClubes), nombre);
 		this.club.add(c);
 	}
-	
+	/**
+     * Obtiene un club por el ID
+     */
 	public Club getClubById(String idClub) {
 		for(Club c : this.club)
 		{
@@ -154,7 +169,9 @@ public class Servidor {
 		}
 		return null;
 	}
-	
+	/**
+     * Obtiene un jugador por el ID
+     */
 	public Jugador getJugadorById(String idJugador)
 	{
 		for(Jugador j : this.jugador)
@@ -169,7 +186,9 @@ public class Servidor {
 	
 	
 	
-
+	/**
+     * Ejecuta el servidor
+     */
 	public static void main(String[] args) {
 		//Inicio el serverSocket de commandos
 		(new Servidor()).ejecutar();

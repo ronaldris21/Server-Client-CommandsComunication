@@ -1,7 +1,7 @@
 package edu.ucam.domain;
 /**
  * <p> 
- * Es una enumeración para identificar 
+ * Es una enumeracion para identificar 
  * con palabras los códigos de respuesta del servidor
  * </p>
  */

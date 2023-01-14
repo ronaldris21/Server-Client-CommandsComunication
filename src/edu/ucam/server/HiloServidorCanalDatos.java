@@ -10,7 +10,11 @@ import edu.ucam.domain.Club;
 import edu.ucam.domain.CodigosRespuesta;
 import edu.ucam.domain.Jugador;
 import edu.ucam.domain.TipoRespuesta;
-
+/**
+ * <p> 
+ * Esta clase se encarga de enviar y/o recibir objetos serializados que se envian por el canal de datos del puerto especificado
+ * </p>
+ */
 public class HiloServidorCanalDatos extends Thread {
 
 	private HiloServidorComandos hiloComandos;
@@ -28,7 +32,9 @@ public class HiloServidorCanalDatos extends Thread {
 	}
 
 	
-	
+	/**
+     * Recibe los comandos y manda sus respectivas respuestas.
+     */
 	public void run()
 	{
 		try 

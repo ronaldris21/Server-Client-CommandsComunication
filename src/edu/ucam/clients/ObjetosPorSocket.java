@@ -5,6 +5,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * <p> 
+ * Esta clase es una clase generica que sirve para enviar y recibir en un socket un objeto de cualquier tipo de datos(T).
+ * </p>
+ */
 public class ObjetosPorSocket<T> {
 
 	public T recibirObjeto(Socket socketDatos)
@@ -22,7 +27,9 @@ public class ObjetosPorSocket<T> {
 		} 
 		return null;
 	}
-    
+	/**
+     * Envia los objetos por el canal de datos.
+     */
 	public void enviarObjetoPorCanalDatos(Socket s, Object dato)
 	{
 		try {
